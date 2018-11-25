@@ -21,9 +21,9 @@ Single line: Give the land occupancy for the Netherlands per province with clear
 MVP: **1**, **2** and **3** for visual. **5**, **7** and **8** for selecting. **4** and **6** are nice to have.
 
 ## Prerequisites
-### data sources 
+### Data sources 
 [Bodemgebruik CBS per provincie](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37105/table?ts=1543167766064)
-### external components 
+### External components 
 Some of these (?):
 - D3
 - D3 Tip Library
@@ -32,11 +32,11 @@ Some of these (?):
 - TopoJSON
 - DataMaps
 
-### review of related visualizations
+### Review of related visualizations
 Three examples:
-[1.](https://fietsboekstoel.github.io/Project/)
-[2.](https://dboekhout.github.io/CSRIB/)
-[3.](https://jaspernaberman.github.io/Programming-Project/Scripts/HTML/index.html)
+[1](https://fietsboekstoel.github.io/Project/)
+[2](https://dboekhout.github.io/CSRIB/)
+[3](https://jaspernaberman.github.io/Programming-Project/Scripts/HTML/index.html)
 
 All use maps of europe or the world. Hovering over the different parts shows some data and highlights the related parts in all the data representations (in some examples).
 
