@@ -34,11 +34,17 @@ Some of these (?):
 
 ### Review of related visualizations
 Three examples:
-[1](https://fietsboekstoel.github.io/Project/)
-[2](https://dboekhout.github.io/CSRIB/)
-[3](https://jaspernaberman.github.io/Programming-Project/Scripts/HTML/index.html)
+[1: map, year slider, area graph](https://fietsboekstoel.github.io/Project/)
+[2: map, bar, pie](https://dboekhout.github.io/CSRIB/)
+[3: map, bar](https://jaspernaberman.github.io/Programming-Project/Scripts/HTML/index.html)
 
-All use maps of europe or the world. Hovering over the different parts shows some data and highlights the related parts in all the data representations (in some examples).
+All use maps of europe or the world. Hovering over the different parts shows some data and highlights the related parts in all the data representations (in example **3**).
+
+Bar: **3** horizontal and sorting, **2** vertical.
+
+Area: **1** gives an area graph but 0 interactivity on it, i would personally add some interactivity with hovering over it. maybe a scanning line.
+
+**1** does have a year slider, i would like to do that about the same.
 
 ### hardest part
 Almost no experience with D3. Solution: read a lot on the internet.
