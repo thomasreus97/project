@@ -38,6 +38,8 @@ Three examples:
 [2.](https://dboekhout.github.io/CSRIB/)
 [3.](https://jaspernaberman.github.io/Programming-Project/Scripts/HTML/index.html)
 
+All use maps of europe or the world. Hovering over the different parts shows some data and highlights the related parts in all the data representations (in some examples).
+
 ### hardest part
 Almost no experience with D3. Solution: read a lot on the internet.
 
