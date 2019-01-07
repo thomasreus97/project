@@ -10,7 +10,7 @@ Target audience: people interested in the land occupancy of the netherlands (pro
 ## Solution
 Single line: Give the land occupancy for the Netherlands per province with clearly visualized and filterable information.
 
-![Visual sketch:](https://github.com/thomasreus97/project/blob/master/layout_proposal_2.png)
+![Visual sketch:](https://github.com/thomasreus97/project/blob/master/doc/layout_proposal_2.png)
 
 ### Main features
 1. Interactive map of the netherlands, shows data when hovering over for one occupancy (choose with **5**). Clicking on one province updates info in **3**, choose year in **7**..
