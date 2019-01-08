@@ -8,34 +8,37 @@ Download csv file from: [Bodemgebruik CBS per provincie](https://opendata.cbs.nl
 
 ## Overview technical components
 
+### Diagram
+![Diagram](https://github.com/thomasreus97/project/blob/master/doc/layout_proposal_2.png)
+
 ### Data
 * Python code: [csv file](https://github.com/thomasreus97/project/blob/master/code/data/Bodemgebruik_data.csv) to [json file](https://github.com/thomasreus97/project/blob/master/code/data/Bodemgebruik_data.json)
 
 ### Visualisations
-* Map of the Netherlands for one occupancy
+* Map of the Netherlands for one occupancy (1)
     - svg from: [source](http://jvectormap.com/maps/countries/netherlands/)
-    - occupancy selectable with dropdown
-    - colorbar legend
+    - occupancy selectable with dropdown (5)
+    - colorbar legend (under map)
     - hovering over province shows data
-    - clicking on province gives information to Piechart
-* Piechart all occupancies of one province 
+    - clicking on province gives information to Piechart (arrow)
+* Piechart all occupancies of one province (3)
     - selectable with dropdown or clicking on map
     - hovering over piechart shows data
-    - clicking on occupancy gives trigger to stacked barchart
-* Stacked barchart for all privinces of selectable 
+    - clicking on occupancy gives trigger to stacked barchart (arrow)
+* Stacked barchart for all privinces of selectable (2)
     - hovering shows data
-    - select for occupancies (selecting also possible by clicking on piechart)
+    - select for occupancies (selecting also possible by clicking on piechart) (8)
     - optional: sorting possibilities bars
-* Optional: line chart for comparing one occupancy for different provinces over time
-    - select for time period
-    - select for provinces
-    - select for occupancy
+* Optional: line chart for comparing one occupancy for different provinces over time (4)
+    - select for time period (10)
+    - select for provinces (9)
+    - select for occupancy (11)
     - legend for provinces (or maybe names in graph)
     - hovering shows crosshairs with data
 
 ### Other functionalities
-* Global color legend for all occupancies
-* Year slider for selecting year for map, piechart and stacked barchart
+* Global color legend for all occupancies (right side of pie chart)
+* Year slider for selecting year for map, piechart and stacked barchart (7)
 
 ## Plugins functionality
 * jquery
