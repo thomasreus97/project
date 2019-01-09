@@ -8,17 +8,16 @@ Creates: interactive map of the Netherlands
 
 function mapNetherlands() {
 
-  // make svg secondary chart
-  svgMap = d3.select("#mainSvg")
-             .append("svg")
-             .attr("id", "mapSvg")
-             // .attr("x", 10)
-             // .attr("y", 10)
-             .attr("width", 400)
-             .attr("height", 400);
-
-   d3.select('#mainSvg').select('#mapSvg').append('rect')
-     .attr("fill", 'red')
-     .attr("width", 400)
-     .attr("height", 400);
+  // place map nl, adapted from: http://jvectormap.com/
+  $(function(){
+    $('#mapDiv').vectorMap({
+      map: 'nl_merc',
+      backgroundColor: '#ece7f2'
+      // focusOn: {
+      //   x: 2,
+      //   y: -0.2,
+      //   scale: 7
+      // }
+    });
+  });
 };
