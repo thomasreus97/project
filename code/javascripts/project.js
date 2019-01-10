@@ -70,6 +70,9 @@ function main(data) {
   // parse the data into another format
   var newData = dataParser(data);
 
+  // assign data ranges to buttons
+  buttonFixer(newData);
+
   // create visualisations
   mapNetherlands();
   piechart(newData);
@@ -82,6 +85,7 @@ function layoutMaker(){
   /*
   Creates all div's and svg's for
   the layout of the visualisations.
+  Adds buttons.
   */
 
   // main div
@@ -109,6 +113,27 @@ function layoutMaker(){
     .style("right", margin + "px")
     .style("width", 2 * margin + param.width + "px")
     .style("height", 2 * margin + param.height + "px");
+
+  // selection dropdown for provinces
+  d3.select("#mainDiv")
+    .append("select")
+    .attr("id", "provinceDropdown")
+    .attr("class", "btn btn-primary dropdown-toggle");
+
+  // create slider and text with value of slider for year selection
+  d3.select("#mainDiv")
+    .append("input")
+    .attr("id", "sliderYear")
+    .attr("type", "range")
+    .attr("class", "custom-range")
+    .style("width", "200px")
+    .style("position", "absolute")
+    .style("left", margin + "px")
+    .style("bottom", "0px");
+  d3.select("#mainDiv")
+    .append("div")
+    .attr("id", "sliderValue")
+    .text("Year:");
 };
 
 
@@ -178,4 +203,56 @@ function dataParser(data) {
   };
 
   return (newData);
+};
+
+
+function buttonFixer(data) {
+  /*
+  Add province names to dropdown
+  Add year range to year slider
+  */
+
+  // get all years and provinces
+  var provinces = Object.keys(data);
+  var years = Object.keys(data[provinces[0]]);
+
+  // create slider and select
+  var slider = d3.select("#sliderYear");
+  var provinceDrop = d3.select("#provinceDropdown");
+
+  // add functionality to slider
+  slider.attr("min", d3.min(years))
+        .attr("max", d3.max(years))
+        .attr("step", "1");
+
+  // add provinces to dropdown
+  provinceDrop.selectAll("option")
+              .data(provinces)
+              .enter()
+              .append("option")
+              .text(function (d) {
+                return d;
+              });
+
+  // add interactivity to year slider
+  slider.on("input", function(){
+          sliderText(this.value);
+          var chosenProvince = provinceDrop.property("value");
+          pieUpdate(data, chosenProvince, this.value);
+        });
+
+  // add interactivity to the select
+  d3.select("#provinceDropdown")
+    .on("input", function() {
+      var chosenYear = slider.property("value");
+      pieUpdate(data, this.value, chosenYear);
+    });
+
+};
+
+
+function sliderText(sliderYear) {
+  /* Shows current year */
+  var sliderValue = document.getElementById("sliderValue");
+  sliderValue.innerHTML = "Year: " + sliderYear;
 };
