@@ -14,3 +14,8 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * Created map of the Netherlands (only the map, nothing added)
 * Created Pie chart of Netherlands Total, update function also almost finished
 * Fixed the layout for the map and pie chart (next to eachother)
+
+# day 4
+* Added province selector
+* Added year slider
+* Updating piechart with both of the above almost done, few things to fix
