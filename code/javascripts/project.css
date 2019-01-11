@@ -17,4 +17,19 @@ p {
   width: 500px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/*
+Below css from:
+https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position
+*/
+.jvectormap-legend-cnt-v{
+    bottom: 0;
+    left: 0;
+    right: auto;
+    top: auto;
+}
+.jvectormap-legend-cnt-h{
+   left: 0;
+   right: auto;
 };

@@ -9,7 +9,7 @@ Two functions;
 */
 
 
-function piechart(data) {
+function piechart(data, name, year) {
   /*
   Make donut chart + legend + title
   Donut source: https://codepen.io/alexmorgan/pen/XXzpZP
@@ -17,10 +17,6 @@ function piechart(data) {
 
   // select svg
   var svg = d3.select("#mainDiv").select("#pieSvg");
-
-  // take first name and year (initialisation)
-  var name = Object.keys(data)[0];
-  var year = Object.keys(data[name])[0];
 
   // put non-NaN data and keys into lists
   var dataSet = data[name][year];
@@ -39,24 +35,24 @@ function piechart(data) {
   };
 
   // append g to svg
-  group = svg.append("g")
-     .style("position", "absolute")
-     .attr("transform",
-           "translate(" + [param.width / 2 + margin,
-                           param.height / 2 + margin] + ")");
+  var group = svg.append("g")
+                 .style("position", "absolute")
+                 .attr("transform",
+                       "translate(" + [param.width / 2 + margin,
+                                       param.height / 2 + margin] + ")");
 
   // define arc
-  arc = d3.arc()
-              .innerRadius(param.radius * 0.4)
+  var arc = d3.arc()
+              .innerRadius(param.radius * 0)
               .outerRadius(param.radius);
 
   // define the pie
-  pie = d3.pie()
+  var pie = d3.pie()
               .value(function(d) {return d})
               .sort(null);
 
   // create arcs with the data
-  path = group.datum(dataList).selectAll("path")
+  var path = group.datum(dataList).selectAll("path")
                   .data(pie)
                   .enter()
                   .append("path")
@@ -64,20 +60,18 @@ function piechart(data) {
                   // .attr("stroke", "black")
                   // .attr("stroke-width", 0.2)
                   .attr("fill", function(d) {
-                    return occupationColors[dataKeys[dataList.indexOf(d.data)]];
+                    return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
                   })
 
                   // interactivity for mouse hovering
                   .on("mouseover", function(d){
                     d3.select(this)
-                      .attr("stroke", "#e6550d")
                     return (tooltip.style("visibility", "visible")
                                    .text(d.data))
                                    .style("z-index", 9999);
                   })
                   .on("mouseout", function(){
                     d3.select(this)
-                      .attr("stroke", "black")
                     return (tooltip.style("visibility", "hidden"));
                   })
                   .on("mousemove", function(d, i){
@@ -94,7 +88,7 @@ function piechart(data) {
            "translate("+[margin / 2, margin / 2]+")")
      .style("font-weight", "bold")
      .style("font-size", "20")
-     .text(name);
+     .text(name + " (" + year + ")");
 };
 
 
@@ -102,6 +96,9 @@ function pieUpdate(data, name, year) {
   /*
   Update pie chart
   */
+
+  // select svg
+  var svg = d3.select("#mainDiv").select("#pieSvg");
 
   // put non-NaN data and keys into lists
   var dataSet = data[name][year];
@@ -119,35 +116,49 @@ function pieUpdate(data, name, year) {
     };
   };
 
-  // pie.value(function(d) { return d; });
-  // path = path.data(pie);
-  // path.transition().duration(750).attrTween("d", arcTween());
+  // check if all zero
+  var noData = true;
+  for (i in dataList) {
+    if (dataList[i] !== 0) {
+      noData = false;
+    };
+  };
 
-  // // if not available reset
-  // if (data[0] === "") {
-  //   return pieUpdate(data, "Nederland", year);
-  // };
+  // show message when no data avaiable
+  if (noData) {
+    svg.append("text")
+       .attr("id", "noData")
+       .attr("transform",
+             "translate(" + [param.width / 2 + margin / 2,
+                             param.height / 2 + margin] + ")")
+       .text("No Data Available");
+  }
+  else {
+    svg.selectAll("#noData").remove();
+  };
+
+  // define arc
+  var arc = d3.arc()
+              .innerRadius(param.radius * 0)
+              .outerRadius(param.radius);
+
+  // define the pie
+  var pie = d3.pie()
+              .value(function(d) {return d})
+              .sort(null);
 
   // create arcs with the data
-  var arcs = group.selectAll("path")
-                  .data(pie(dataList))
-                  .transition()
-                  .attr("d", arc)
-                  .attr("fill", function(d) {
-                    return occupationColors[dataKeys[dataList.indexOf(d.data)]];
-                  });
+  svg.selectAll("path")
+     .data(pie(dataList))
+     .transition()
+     .attr("d", arc)
+     .attr("fill", function(d) {
+       return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
+     });
 
   // update title
   d3.select("#pieTitle")
     .transition()
     .attr("class", "text")
-    .text(name);
-
-  // function arcTween(a) {
-  //   var i = d3.interpolate(this._current, a);
-  //   this._current = i(0);
-  //   return function(t) {
-  //     return arc(i(t));
-  //   };
-  // }
+    .text(name + " (" + year + ")");
 };

@@ -9,8 +9,10 @@ Creates:
 
 window.onload = function() {
   /*
-  Define a few variables and
+  Define variables:
+  - colors, occupations, tooltip
   load data in from a json file
+  start main function
   */
 
   // parameters plot
@@ -22,19 +24,32 @@ window.onload = function() {
   };
 
   // color list for different occupations
-  occupationColors = {"Traffic": 'grey',
-                      "Built": 'red',
-                      "Semi-built": 'orange',
-                      "Recreation": 'yellow',
-                      "Agricultural": 'brown',
-                      "Forest & Nature": 'green',
-                      "Water": 'blue',
-                      "Undefined": 'white'};
+  occupancyColors = {"Traffic": '#808080',
+                     "Built": '#ff0000',
+                     "Semi-built": '#FFA500',
+                     "Recreation": '#ffff00',
+                     "Agricultural": '#8B4513',
+                     "Forest & Nature": '#12820e',
+                     "Water": '#0000FF',
+                     "Undefined": "White"};
 
-  // "global" occupations list
-  globalOccupations = ["Total", "Traffic", "Built", "Semi-built",
+  // "global" occupancys list
+  globalOccupancies = ["Total", "Traffic", "Built", "Semi-built",
                        "Recreation", "Agricultural", "Forest & Nature",
                        "Water", "Undefined"];
+
+  indentifiers = [
+    "NL-GR", "NL-FR", "NL-DR", "NL-OV", "NL-FL", "NL-GE",
+    "NL-UT", "NL-NH", "NL-ZH", "NL-ZE", "NL-NB", "NL-LI"
+  ];
+
+  colorScales = {"Traffic": ['#d8d8d8', '#808080'],
+                 "Built": ['#ffb2b2', '#ff0000'],
+                 "Semi-built": ['#ffe4b2', '#FFA500'],
+                 "Recreation": ['#ffffcc', '#ffff00'],
+                 "Agricultural": ['#DEB887', '#8B4513'],
+                 "Forest & Nature": ['#57ff51', '#12820e'],
+                 "Water": ['#70a1ef', '#0000FF']};
 
   // tooltip
   tooltip = d3.select("body")
@@ -64,6 +79,11 @@ function main(data) {
   visualisation
   */
 
+  // start year, occupancy and name
+  var year = 1950;
+  var occupancy = "Traffic";
+  var name = "Nederland";
+
   // create div and svg layout
   layoutMaker();
 
@@ -72,10 +92,11 @@ function main(data) {
 
   // assign data ranges to buttons
   buttonFixer(newData);
+  sliderText(year);
 
   // create visualisations
-  mapNetherlands();
-  piechart(newData);
+  mapNetherlands(newData, year, occupancy);
+  piechart(newData, name, year);
   stackedBarChart();
 
 };
@@ -134,6 +155,12 @@ function layoutMaker(){
     .append("div")
     .attr("id", "sliderValue")
     .text("Year:");
+
+  // selection dropdown occupancy
+  d3.select("#mainDiv")
+    .append("select")
+    .attr("id", "occupancyDropdown")
+    .attr("class", "btn btn-primary dropdown-toggle");
 };
 
 
@@ -152,25 +179,25 @@ function dataParser(data) {
       var counter = 0;
       var sumValue = Number.NaN;
       var totalSum = 0;
-      for (var occupation in data[province][year]) {
-        var value = data[province][year][occupation];
-        occupation = occupation.split("/")[0];
+      for (var occupancy in data[province][year]) {
+        var value = data[province][year][occupancy];
+        occupancy = occupancy.split("/")[0];
 
-        // if first occupation define currOcc and total value
+        // if first occupancy define currOcc and total value
         if (currOcc === "") {
-          currOcc = occupation;
+          currOcc = occupancy;
           var total = parseInt(value);
         }
 
-        // if new occupation add summed value to lists
-        else if (currOcc !== occupation) {
-          newData[province][year][globalOccupations[counter]] = sumValue;
+        // if new occupancy add summed value to lists
+        else if (currOcc !== occupancy) {
+          newData[province][year][globalOccupancies[counter]] = sumValue;
           if (sumValue) {
             totalSum += sumValue;
           };
           counter += 1;
           sumValue = Number.NaN;
-          currOcc = occupation;
+          currOcc = occupancy;
         };
 
         // add value to sum
@@ -185,7 +212,7 @@ function dataParser(data) {
       };
 
       // add last round
-      newData[province][year][globalOccupations[counter]] = sumValue;
+      newData[province][year][globalOccupancies[counter]] = sumValue;
       if (sumValue) {
         totalSum += sumValue;
       };
@@ -193,10 +220,10 @@ function dataParser(data) {
 
       // calculate and add "Undefined"
       if (totalSum === 0) {
-        newData[province][year][globalOccupations[counter]] = 0;
+        newData[province][year][globalOccupancies[counter]] = 0;
       }
       else {
-        newData[province][year][globalOccupations[counter]] = (2 * total -
+        newData[province][year][globalOccupancies[counter]] = (2 * total -
                                                                totalSum);
       };
     };
@@ -212,13 +239,17 @@ function buttonFixer(data) {
   Add year range to year slider
   */
 
-  // get all years and provinces
+  // get all years, occupancies and provinces
   var provinces = Object.keys(data);
   var years = Object.keys(data[provinces[0]]);
+  var occupancies = globalOccupancies;
+  occupancies.pop();
+  occupancies.shift();
 
   // create slider and select
   var slider = d3.select("#sliderYear");
   var provinceDrop = d3.select("#provinceDropdown");
+  var occupancyDrop = d3.select('#occupancyDropdown');
 
   // add functionality to slider
   slider.attr("min", d3.min(years))
@@ -234,16 +265,32 @@ function buttonFixer(data) {
                 return d;
               });
 
+  // add occupancies to dropdow
+  occupancyDrop.selectAll("option")
+               .data(occupancies)
+               .enter()
+               .append("option")
+               .text(function (d) {
+                 return d;
+               });
+
+  // add interactivity to occupancy dropdown
+  occupancyDrop.on("input", function() {
+      var chosenYear = slider.property("value");
+      mapNetherlands(data, chosenYear, this.value);
+    });
+
   // add interactivity to year slider
   slider.on("input", function(){
           sliderText(this.value);
           var chosenProvince = provinceDrop.property("value");
+          var chosenOccupancy = occupancyDrop.property("value");
           pieUpdate(data, chosenProvince, this.value);
+          mapNetherlands(data, this.value, chosenOccupancy);
         });
 
   // add interactivity to the select
-  d3.select("#provinceDropdown")
-    .on("input", function() {
+  provinceDrop.on("input", function() {
       var chosenYear = slider.property("value");
       pieUpdate(data, this.value, chosenYear);
     });
