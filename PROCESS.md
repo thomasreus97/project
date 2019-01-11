@@ -19,3 +19,10 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * Added province selector
 * Added year slider
 * Updating piechart with both of the above almost done, few things to fix
+
+# day 5
+* added legend + colors to map
+* clicking on province updates piechart
+* hovering shows the data
+* unknown data changes the province to background color
+* added dropdown for occupancy select, update of the map still needs to be added
