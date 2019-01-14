@@ -26,3 +26,11 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * hovering shows the data
 * unknown data changes the province to background color
 * added dropdown for occupancy select, update of the map still needs to be added
+
+# day 6
+* updating map works for both year and occupancy
+* error message shows when no data available
+* legend works correctly
+* clicking on piechart occupancy updates map occupancy
+* positioning slider and dropdowns
+(basically: map and piechart as as-good-as finished; except title)
