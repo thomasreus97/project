@@ -46,7 +46,7 @@ window.onload = function() {
   colorScales = {"Traffic": ['#d8d8d8', '#808080'],
                  "Built": ['#ffb2b2', '#ff0000'],
                  "Semi-built": ['#ffe4b2', '#FFA500'],
-                 "Recreation": ['#ffffcc', '#ffff00'],
+                 "Recreation": ['#f3f772', '#a5a90e'],
                  "Agricultural": ['#DEB887', '#8B4513'],
                  "Forest & Nature": ['#57ff51', '#12820e'],
                  "Water": ['#70a1ef', '#0000FF']};
@@ -95,7 +95,8 @@ function main(data) {
   sliderText(year);
 
   // create visualisations
-  mapNetherlands(newData, year, occupancy);
+  currentOccupancy = occupancy;
+  mapNetherlands(newData, year, currentOccupancy);
   piechart(newData, name, year);
   stackedBarChart();
 
@@ -138,11 +139,22 @@ function layoutMaker(){
   // selection dropdown for provinces
   d3.select("#mainDiv")
     .append("select")
+    .style("position", "relative")
     .attr("id", "provinceDropdown")
     .attr("class", "btn btn-primary dropdown-toggle");
 
-  // create slider and text with value of slider for year selection
+  // div for slider
   d3.select("#mainDiv")
+    .append("div")
+    .attr("id", "sliderDiv")
+    .attr("width", param.width)
+    .style("position", "absolute")
+    .style("left", margin + 4 * param.width / 3 + "px")
+    .style("top", 2 * margin + param.height + "px")
+    .style("fill", 'blue');
+
+  // add slider and text with value of slider for year selection to div
+  d3.select("#sliderDiv")
     .append("input")
     .attr("id", "sliderYear")
     .attr("type", "range")
@@ -151,7 +163,7 @@ function layoutMaker(){
     .style("position", "absolute")
     .style("left", margin + "px")
     .style("bottom", "0px");
-  d3.select("#mainDiv")
+  d3.select("#sliderDiv")
     .append("div")
     .attr("id", "sliderValue")
     .text("Year:");
@@ -161,6 +173,15 @@ function layoutMaker(){
     .append("select")
     .attr("id", "occupancyDropdown")
     .attr("class", "btn btn-primary dropdown-toggle");
+
+  // div for error message map
+  d3.select("#mainDiv")
+    .append("div")
+    .attr("id", "errorDiv")
+    .attr("width", param.width)
+    .style("position", "absolute")
+    .style("left", param.width + "px")
+    .style("top", margin + 2 * param.height / 3 + "px");
 };
 
 
@@ -277,16 +298,16 @@ function buttonFixer(data) {
   // add interactivity to occupancy dropdown
   occupancyDrop.on("input", function() {
       var chosenYear = slider.property("value");
-      mapNetherlands(data, chosenYear, this.value);
+      currentOccupancy = this.value;
+      updateMap(data, chosenYear, currentOccupancy);
     });
 
   // add interactivity to year slider
   slider.on("input", function(){
           sliderText(this.value);
           var chosenProvince = provinceDrop.property("value");
-          var chosenOccupancy = occupancyDrop.property("value");
           pieUpdate(data, chosenProvince, this.value);
-          mapNetherlands(data, this.value, chosenOccupancy);
+          yearUpdateMap(data, this.value, currentOccupancy);
         });
 
   // add interactivity to the select

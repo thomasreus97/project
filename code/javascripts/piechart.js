@@ -78,6 +78,13 @@ function piechart(data, name, year) {
                     return tooltip.style("top", event.clientY -
                                          param.height / 8 + "px")
                                   .style("left", event.clientX + "px");
+                  })
+                  .on("click", function(d) {
+                    if (dataKeys[dataList.indexOf(d.data)] !== "Undefined"){
+                      var chosenYear = d3.select("#sliderYear").property("value");
+                      currentOccupancy = dataKeys[dataList.indexOf(d.data)];
+                      updateMap(data, year, currentOccupancy);
+                    };
                   });
 
   // add title
@@ -148,12 +155,22 @@ function pieUpdate(data, name, year) {
               .sort(null);
 
   // create arcs with the data
+  var pies = svg.selectAll("path")
+                .data(pie(dataList))
+                .transition()
+                .attr("d", arc)
+                .attr("fill", function(d) {
+                  return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
+                });
+
+  // update on click with new data
   svg.selectAll("path")
-     .data(pie(dataList))
-     .transition()
-     .attr("d", arc)
-     .attr("fill", function(d) {
-       return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
+     .on("click", function(d) {
+       if (dataKeys[dataList.indexOf(d.data)] !== "Undefined"){
+         var chosenYear = d3.select("#sliderYear").property("value");
+         currentOccupancy = dataKeys[dataList.indexOf(d.data)];
+         updateMap(data, year, currentOccupancy);
+       };
      });
 
   // update title
