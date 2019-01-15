@@ -6,6 +6,7 @@ Project: dataprocessing
 Creates: interactive map of the Netherlands
 */
 
+
 function mapNetherlands(data, year, currentOccupancy) {
   /*
   Creates map of the Netherlands

@@ -6,6 +6,7 @@ Project: dataprocessing
 Creates:
 */
 
+// d3 simple slider
 
 window.onload = function() {
   /*
@@ -98,7 +99,7 @@ function main(data) {
   currentOccupancy = occupancy;
   mapNetherlands(newData, year, currentOccupancy);
   piechart(newData, name, year);
-  stackedBarChart();
+  stackedBarChart(newData, year, Object.keys(occupancyColors));
 
 };
 
@@ -134,6 +135,15 @@ function layoutMaker(){
     .style("position", "absolute")
     .style("right", margin + "px")
     .style("width", 2 * margin + param.width + "px")
+    .style("height", 2 * margin + param.height + "px");
+
+  // stacked barchart svg
+  d3.select("body")
+    .append("svg")
+    .attr("id", "barSvg")
+    .style("margin-left", "auto")
+    .style("margin-right", "auto")
+    .style("width", 4 * margin + 2 * param.width + "px")
     .style("height", 2 * margin + param.height + "px");
 
   // selection dropdown for provinces
@@ -180,7 +190,7 @@ function layoutMaker(){
     .attr("id", "errorDiv")
     .attr("width", param.width)
     .style("position", "absolute")
-    .style("left", param.width + "px")
+    .style("left", param.width - margin + "px")
     .style("top", margin + 2 * param.height / 3 + "px");
 };
 

@@ -66,12 +66,14 @@ function piechart(data, name, year) {
                   // interactivity for mouse hovering
                   .on("mouseover", function(d){
                     d3.select(this)
+                      .attr("opacity", 0.5)
                     return (tooltip.style("visibility", "visible")
                                    .text(d.data))
                                    .style("z-index", 9999);
                   })
                   .on("mouseout", function(){
                     d3.select(this)
+                      .attr("opacity", 1)
                     return (tooltip.style("visibility", "hidden"));
                   })
                   .on("mousemove", function(d, i){
@@ -81,9 +83,12 @@ function piechart(data, name, year) {
                   })
                   .on("click", function(d) {
                     if (dataKeys[dataList.indexOf(d.data)] !== "Undefined"){
-                      var chosenYear = d3.select("#sliderYear").property("value");
+                      var chosenYear = d3.select("#sliderYear")
+                                         .property("value");
                       currentOccupancy = dataKeys[dataList.indexOf(d.data)];
                       updateMap(data, year, currentOccupancy);
+                      d3.select("#occupancyDropdown")
+                        .property("value", currentOccupancy);
                     };
                   });
 
@@ -170,6 +175,7 @@ function pieUpdate(data, name, year) {
          var chosenYear = d3.select("#sliderYear").property("value");
          currentOccupancy = dataKeys[dataList.indexOf(d.data)];
          updateMap(data, year, currentOccupancy);
+         d3.select("#occupancyDropdown").property("value", currentOccupancy);
        };
      });
 
