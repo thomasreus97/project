@@ -34,3 +34,7 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * clicking on piechart occupancy updates map occupancy
 * positioning slider and dropdowns
 (basically: map and piechart as as-good-as finished; except title)
+
+# day 7
+* Added stacked barchart (only initial)
+* Added value update in dropdown(occupancy) when clicking on piechart.
