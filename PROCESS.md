@@ -38,3 +38,9 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 # day 7
 * Added stacked barchart (only initial)
 * Added value update in dropdown(occupancy) when clicking on piechart.
+
+# day 8
+* Added feature: clicking on occupancy in barchart also updates map.
+* finished functionality of stacked barchart (selecting occupancies still needed)
+* changed layout for now (not sure if i will change it again)
+* added navbar ( buttons inside of the navbar ) for more clearity
