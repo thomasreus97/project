@@ -18,6 +18,9 @@ p {
   margin-left: auto;
   margin-right: auto;
 }
+.white {
+  color: white;
+}
 
 /*
 Below css from:
@@ -32,4 +35,13 @@ https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-positi
 .jvectormap-legend-cnt-h{
    left: 0;
    right: auto;
-};
+}
+
+/* https://www.bootply.com/AAcC6rXv4R */
+.navbar {
+  width: 100%;
+  position: fixed;
+  border-radius: 0;
+  height: 50px;
+  z-index: 9999;
+}

@@ -150,14 +150,10 @@ function yearUpdateMap(data, year, currentOccupancy) {
   var mapObject = $('#mapDiv').vectorMap('get', 'mapObject');
 
   // update graph variables
-  // mapObject.series.regions[0] = undefined;
   mapObject.series.regions[0].clear();
   mapObject.series.regions[1].clear();
   mapObject.series.regions[0].setValues(dataMap);
-  // mapObject.series.regions[0].scale = colorScales[occupancy];
-  // mapObject.series.regions[0].legend.title = occupancy + " (km\xB2)";
   mapObject.series.regions[1].setValues(colorNanProv);
-  // var legendtitle = d3.select(".jvectormap-legend").remove();
 };
 
 

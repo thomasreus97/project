@@ -6,8 +6,6 @@ Project: dataprocessing
 Creates:
 */
 
-// d3 simple slider
-
 window.onload = function() {
   /*
   Define variables:
@@ -19,7 +17,7 @@ window.onload = function() {
   // parameters plot
   margin = 100
   param = {
-    height: 400,
+    height: 600,
     width: 400,
     radius: 200
   };
@@ -57,11 +55,10 @@ window.onload = function() {
               .append("div")
               .style("position", "fixed")
               .style("text-align", "center")
-              .style("width", "80px")
-              .style("height", "30px")
+              .style("height", "28px")
+              .style("width", "150px")
               .style("visibility", "hidden")
-              .style("border", "2px solid #e6550d")
-              .style("background", "#3182bd")
+              .style("background", "black")
               .style("border-radius", "5px")
               .style("line-height", "30px")
               .style("color", "white");
@@ -115,74 +112,75 @@ function layoutMaker(){
   d3.select("body")
     .append("div")
     .attr("id", "mainDiv")
+    .style("position", "relative")
     .style("margin-left", "auto")
     .style("margin-right", "auto")
-    .style("width", 4 * margin + 2 * param.width + "px")
-    .style("height", 2 * margin + param.height + "px");
+    .style("top", "200px")
+    .style("height", param.height + margin + "px")
+    .style("width", "100%");
 
   // map div
   d3.select("#mainDiv")
     .append("div")
     .attr("id", "mapDiv")
     .style("position", "absolute")
-    .style("width", margin + param.width + "px")
-    .style("height", 2 * margin + param.height + "px");
+    .style("left", "3%")
+    .style("width", "30%")
+    .style("height", "95%");
 
   // piechart svg
   d3.select("#mainDiv")
     .append("svg")
     .attr("id", "pieSvg")
     .style("position", "absolute")
-    .style("right", margin + "px")
-    .style("width", 2 * margin + param.width + "px")
-    .style("height", 2 * margin + param.height + "px");
+    .style("left", "34.5%")
+    .style("width", "30%")
+    .style("height", "95%");
 
   // stacked barchart svg
-  d3.select("body")
+  d3.select("#mainDiv")
     .append("svg")
     .attr("id", "barSvg")
-    .style("margin-left", "auto")
-    .style("margin-right", "auto")
-    .style("width", 4 * margin + 2 * param.width + "px")
-    .style("height", 2 * margin + param.height + "px");
+    .style("position", "absolute")
+    .style("right", "3%")
+    .style("width", "30%")
+    .style("height", "95%");
 
   // selection dropdown for provinces
-  d3.select("#mainDiv")
+  d3.select("#navBar")
     .append("select")
     .style("position", "relative")
     .attr("id", "provinceDropdown")
-    .attr("class", "btn btn-primary dropdown-toggle");
+    .attr("class", "btn dropdown-toggle")
+    .style("width", 1.5 * margin + "px");
+
+  // selection dropdown occupancy
+  d3.select("#navBar")
+    .append("select")
+    .attr("id", "occupancyDropdown")
+    .attr("class", "btn dropdown-toggle")
+    .style("width", 1.5 * margin + "px");
 
   // div for slider
-  d3.select("#mainDiv")
+  d3.select("#navBar")
     .append("div")
     .attr("id", "sliderDiv")
-    .attr("width", param.width)
-    .style("position", "absolute")
-    .style("left", margin + 4 * param.width / 3 + "px")
-    .style("top", 2 * margin + param.height + "px")
-    .style("fill", 'blue');
+    .attr("width", param.width);
 
-  // add slider and text with value of slider for year selection to div
-  d3.select("#sliderDiv")
+  // create year value
+  d3.select("#navBar")
+    .append("span")
+    .attr("id", "sliderValue")
+    .text("Year:")
+    .style("color", "white");
+
+  // create slider bar
+  d3.select("#navBar")
     .append("input")
     .attr("id", "sliderYear")
     .attr("type", "range")
     .attr("class", "custom-range")
-    .style("width", "200px")
-    .style("position", "absolute")
-    .style("left", margin + "px")
-    .style("bottom", "0px");
-  d3.select("#sliderDiv")
-    .append("div")
-    .attr("id", "sliderValue")
-    .text("Year:");
-
-  // selection dropdown occupancy
-  d3.select("#mainDiv")
-    .append("select")
-    .attr("id", "occupancyDropdown")
-    .attr("class", "btn btn-primary dropdown-toggle");
+    .style("width", param.width / 2 + "px");
 
   // div for error message map
   d3.select("#mainDiv")
@@ -190,8 +188,9 @@ function layoutMaker(){
     .attr("id", "errorDiv")
     .attr("width", param.width)
     .style("position", "absolute")
-    .style("left", param.width - margin + "px")
-    .style("top", margin + 2 * param.height / 3 + "px");
+    .style("left", "14%")
+    .style("top", document.getElementById('mainDiv').clientHeight / 2 -
+           margin + "px");
 };
 
 
@@ -318,6 +317,7 @@ function buttonFixer(data) {
           var chosenProvince = provinceDrop.property("value");
           pieUpdate(data, chosenProvince, this.value);
           yearUpdateMap(data, this.value, currentOccupancy);
+          updateBar(data, this.value, Object.keys(occupancyColors));
         });
 
   // add interactivity to the select
@@ -325,7 +325,6 @@ function buttonFixer(data) {
       var chosenYear = slider.property("value");
       pieUpdate(data, this.value, chosenYear);
     });
-
 };
 
 
