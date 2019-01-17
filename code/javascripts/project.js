@@ -50,6 +50,19 @@ window.onload = function() {
                  "Forest & Nature": ['#57ff51', '#12820e'],
                  "Water": ['#70a1ef', '#0000FF']};
 
+  // description div
+  descriptionTool = d3.select("body")
+                      .append("div")
+                      .style("position", "fixed")
+                      .style("text-align", "center")
+                      .style("height", "200px")
+                      .style("width", "200px")
+                      .style("visibility", "hidden")
+                      .style("background", "black")
+                      .style("border-radius", "5px")
+                      .style("line-height", "30px")
+                      .style("color", "white");
+
   // tooltip
   tooltip = d3.select("body")
               .append("div")
@@ -91,6 +104,9 @@ function main(data) {
   // assign data ranges to buttons
   buttonFixer(newData);
   sliderText(year);
+
+  // make legend
+  makeLegend();
 
   // create visualisations
   currentOccupancy = occupancy;
@@ -135,19 +151,39 @@ function layoutMaker(){
     .style("position", "absolute")
     .style("left", "34.5%")
     .style("width", "30%")
-    .style("height", "95%");
+    .style("height", "60%");
+
+  // legend svg
+  d3.select("#mainDiv")
+    .append("svg")
+    .attr("id", "legendSvg")
+    .style("position", "absolute")
+    .style("left", "34.5%")
+    .style("width", "30%")
+    .style("height", "40%")
+    .style("bottom", "0px");
 
   // stacked barchart svg
   d3.select("#mainDiv")
     .append("svg")
     .attr("id", "barSvg")
     .style("position", "absolute")
-    .style("right", "3%")
+    .style("left", "64.5%")
     .style("width", "30%")
     .style("height", "95%");
 
+  // button for description in navbar
+  d3.select("#navBarList")
+    .append("li")
+    .append("select")
+    .style("position", "relative")
+    .attr("id", "description")
+    .attr("class", "btn dropdown-toggle")
+    .style("width", 1.5 * margin + "px");
+
   // selection dropdown for provinces
-  d3.select("#navBar")
+  d3.select("#navBarList")
+    .append("li")
     .append("select")
     .style("position", "relative")
     .attr("id", "provinceDropdown")
@@ -155,27 +191,24 @@ function layoutMaker(){
     .style("width", 1.5 * margin + "px");
 
   // selection dropdown occupancy
-  d3.select("#navBar")
+  d3.select("#navBarList")
+    .append("li")
     .append("select")
     .attr("id", "occupancyDropdown")
     .attr("class", "btn dropdown-toggle")
     .style("width", 1.5 * margin + "px");
 
-  // div for slider
-  d3.select("#navBar")
-    .append("div")
-    .attr("id", "sliderDiv")
-    .attr("width", param.width);
-
   // create year value
-  d3.select("#navBar")
+  d3.select("#navBarList")
+    .append("li")
     .append("span")
     .attr("id", "sliderValue")
     .text("Year:")
     .style("color", "white");
 
   // create slider bar
-  d3.select("#navBar")
+  d3.select("#navBarList")
+    .append("li")
     .append("input")
     .attr("id", "sliderYear")
     .attr("type", "range")
@@ -191,6 +224,15 @@ function layoutMaker(){
     .style("left", "14%")
     .style("top", document.getElementById('mainDiv').clientHeight / 2 -
            margin + "px");
+
+  // d3.select("#description")
+  //   .on("click", function(){
+  //     $(function () {
+  //       $('.example-popover').popover({
+  //         container: 'body'
+  //       });
+  //     });
+  //   });
 };
 
 
@@ -275,11 +317,14 @@ function buttonFixer(data) {
   var occupancies = globalOccupancies;
   occupancies.pop();
   occupancies.shift();
+  var descriptions = globalOccupancies;
+  globalOccupancies[0] = "Descriptions"
 
   // create slider and select
   var slider = d3.select("#sliderYear");
   var provinceDrop = d3.select("#provinceDropdown");
   var occupancyDrop = d3.select('#occupancyDropdown');
+  var descriptionDrop = d3.select("#description")
 
   // add functionality to slider
   slider.attr("min", d3.min(years))
@@ -304,27 +349,47 @@ function buttonFixer(data) {
                  return d;
                });
 
+  descriptionDrop.selectAll("option")
+                 .data(descriptions)
+                 .enter()
+                 .append("option")
+                 .text(function (d) {
+                   return d;
+                 });
+
   // add interactivity to occupancy dropdown
   occupancyDrop.on("input", function() {
-      var chosenYear = slider.property("value");
-      currentOccupancy = this.value;
-      updateMap(data, chosenYear, currentOccupancy);
-    });
+    var chosenYear = slider.property("value");
+    currentOccupancy = this.value;
+    updateMap(data, chosenYear, currentOccupancy);
+  });
 
   // add interactivity to year slider
   slider.on("input", function(){
-          sliderText(this.value);
-          var chosenProvince = provinceDrop.property("value");
-          pieUpdate(data, chosenProvince, this.value);
-          yearUpdateMap(data, this.value, currentOccupancy);
-          updateBar(data, this.value, Object.keys(occupancyColors));
-        });
+    sliderText(this.value);
+    var chosenProvince = provinceDrop.property("value");
+    pieUpdate(data, chosenProvince, this.value);
+    yearUpdateMap(data, this.value, currentOccupancy);
+    updateBar(data, this.value, Object.keys(occupancyColors));
+  });
 
   // add interactivity to the select
   provinceDrop.on("input", function() {
-      var chosenYear = slider.property("value");
-      pieUpdate(data, this.value, chosenYear);
-    });
+    var chosenYear = slider.property("value");
+    pieUpdate(data, this.value, chosenYear);
+  });
+
+  // add description show to descriptionDrop
+  descriptionDrop.on("input", function() {
+    if (this.value === "Descriptions") {
+      return descriptionTool.style("visibility", "hidden");
+    }
+    else {
+      return descriptionTool.style("visibility", "visible")
+                            .text(descriptionFunction(this.value))
+                            .style("z-index", 9999);
+    };
+  });
 };
 
 

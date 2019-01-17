@@ -18,6 +18,8 @@ p {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* makes text of class white, white*/
 .white {
   color: white;
 }

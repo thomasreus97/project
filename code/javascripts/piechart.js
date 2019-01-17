@@ -35,7 +35,7 @@ function piechart(data, name, year) {
   };
 
   // get width and height of svg
-  var svgSize = document.getElementById('pieSvg');
+  var svgSize = document.getElementById("pieSvg");
   var width = svgSize.clientWidth;
   var height = svgSize.clientHeight;
 
@@ -43,12 +43,12 @@ function piechart(data, name, year) {
   var group = svg.append("g")
                  .style("position", "absolute")
                  .attr("transform", "translate(" + [width / 2,
-                                                    height / 2] + ")");
+                                                    width / 3 + margin] + ")");
 
   // define arc
   var arc = d3.arc()
               .innerRadius(0)
-              .outerRadius(width / 2);
+              .outerRadius(width / 3);
 
   // define the pie
   var pie = d3.pie()
@@ -61,14 +61,12 @@ function piechart(data, name, year) {
                   .enter()
                   .append("path")
                   .attr("d", arc)
-                  // .attr("stroke", "black")
-                  // .attr("stroke-width", 0.2)
                   .attr("fill", function(d) {
                     return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
                   })
 
                   // interactivity for mouse hovering
-                  .on("mouseover", function(d){
+                  .on("mouseover", function(d) {
                     d3.select(this)
                       .attr("opacity", 0.5);
                     return (tooltip.style("visibility", "visible")
@@ -76,12 +74,12 @@ function piechart(data, name, year) {
                                          ": " + d.data))
                                    .style("z-index", 9999);
                   })
-                  .on("mouseout", function(){
+                  .on("mouseout", function() {
                     d3.select(this)
                       .attr("opacity", 1);
                     return (tooltip.style("visibility", "hidden"));
                   })
-                  .on("mousemove", function(d, i){
+                  .on("mousemove", function(d, i) {
                     return tooltip.style("top", event.clientY -
                                          param.height / 8 + "px")
                                   .style("left", event.clientX + "px");
@@ -90,10 +88,13 @@ function piechart(data, name, year) {
                     if (dataKeys[dataList.indexOf(d.data)] !== "Undefined"){
                       var chosenYear = d3.select("#sliderYear")
                                          .property("value");
-                      currentOccupancy = dataKeys[dataList.indexOf(d.data)];
-                      updateMap(data, year, currentOccupancy);
-                      d3.select("#occupancyDropdown")
-                        .property("value", currentOccupancy);
+                      var currOcc = dataKeys[dataList.indexOf(d.data)];
+                      if (currentOccupancy !== currOcc) {
+                        currentOccupancy = currOcc;
+                        updateMap(data, chosenYear, currentOccupancy);
+                        d3.select("#occupancyDropdown")
+                          .property("value", currentOccupancy);
+                      };
                     };
                   });
 
@@ -124,7 +125,7 @@ function pieUpdate(data, name, year) {
   for (key in dataSet) {
     if (key !== "Total") {
       dataKeys.push(key);
-      if (dataSet[key]){
+      if (dataSet[key]) {
         dataList.push(dataSet[key]);
       }
       else {
@@ -141,13 +142,17 @@ function pieUpdate(data, name, year) {
     };
   };
 
+  // get width and height of svg
+  var svgSize = document.getElementById('pieSvg');
+  var width = svgSize.clientWidth;
+  var height = svgSize.clientHeight;
+
   // show message when no data avaiable
   if (noData) {
     svg.append("text")
        .attr("id", "noData")
        .attr("transform",
-             "translate(" + [param.width / 2 + margin / 2,
-                             param.height / 2 + margin] + ")")
+             "translate(" + [width / 2, width / 3 + margin] + ")")
        .text("No Data Available");
   }
   else {
@@ -156,8 +161,8 @@ function pieUpdate(data, name, year) {
 
   // define arc
   var arc = d3.arc()
-              .innerRadius(param.radius * 0)
-              .outerRadius(param.radius);
+              .innerRadius(0)
+              .outerRadius(width / 3);
 
   // define the pie
   var pie = d3.pie()
@@ -182,17 +187,22 @@ function pieUpdate(data, name, year) {
       });
 
   pies.exit().remove();
+
   // update on click with new data
   svg.selectAll("path")
      .on("click", function(d) {
        if (dataKeys[dataList.indexOf(d.data)] !== "Undefined"){
          var chosenYear = d3.select("#sliderYear").property("value");
-         currentOccupancy = dataKeys[dataList.indexOf(d.data)];
-         updateMap(data, year, currentOccupancy);
-         d3.select("#occupancyDropdown").property("value", currentOccupancy);
+         var currOcc = dataKeys[dataList.indexOf(d.data)];
+         if (currentOccupancy !== currOcc) {
+           currentOccupancy = currOcc;
+           updateMap(data, chosenYear, currentOccupancy);
+           d3.select("#occupancyDropdown")
+             .property("value", currentOccupancy);
+         };
        }
      })
-     .on("mouseover", function(d){
+     .on("mouseover", function(d) {
        d3.select(this)
          .attr("opacity", 0.5);
        return (tooltip.style("visibility", "visible")

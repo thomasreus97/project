@@ -56,7 +56,7 @@ function scaleMaker(data, year, occupancies) {
   // calculate scales
   var xScaleBar = d3.scaleBand()
                     .domain(xDataBar)
-                    .range([margin, width]);
+                    .range([3 * margin / 5, width]);
 
   var yScaleBar = d3.scaleLinear()
                     .domain([0, Math.round(d3.max(yDataBar) + 500 -
@@ -93,7 +93,7 @@ function axesMaker(scales, year) {
   svg.append("g")
      .attr("class", "axis")
      .attr("id", "xAxis")
-     .attr("transform", "translate("+[0, scales[3][1] - margin]+")")
+     .attr("transform", "translate(" + [0, scales[3][1] - margin] + ")")
      .call(xAxis)
 
      // this part adapted from: http://bl.ocks.org/d3noob/ccdcb7673cdb3a796e13
@@ -110,7 +110,7 @@ function axesMaker(scales, year) {
   svg.append("g")
      .attr("class", "axis")
      .attr("id", "yAxis")
-     .attr("transform", "translate("+[margin, 0]+")")
+     .attr("transform", "translate(" + [3 * margin / 5, 0] + ")")
      .call(yAxis);
 
   // y label
@@ -118,7 +118,7 @@ function axesMaker(scales, year) {
      .attr("class", "text")
      .attr("transform", "rotate(-90)")
      .attr("x", - scales[3][1] / 3)
-     .attr("y", margin / 3)
+     .attr("y", 0)
      .attr("dy", "1em")
      .style("text-anchor", "middle")
      .text("Area covered (km\xB2)");
@@ -184,7 +184,7 @@ function barGraphUpdater(data, scales, year, occupancies) {
   var bars = svg.selectAll("rect").data(dataListBar);
   var step = 0;
   var attrs = function(selection) {
-    selection.attr("width", (scales[3][0] - margin) / scales[2] - 2 + "px")
+    selection.attr("width", (scales[3][0] - margin) / scales[2] + "px")
 
              // add color of occupancy
              .attr("fill", function(d, i) {
@@ -220,7 +220,8 @@ function barGraphUpdater(data, scales, year, occupancies) {
             d3.select(this)
               .attr("opacity", 0.5);
             return (tooltip.style("visibility", "visible")
-                           .text(occupancies[j] + ": " + d));
+                           .text(occupancies[j] + ": " + d))
+                           .style("z-index", 9999);
       })
       .on("mouseout", function(){
         d3.select(this)
@@ -237,10 +238,13 @@ function barGraphUpdater(data, scales, year, occupancies) {
         if (occupancies[j] !== "Undefined"){
           var chosenYear = d3.select("#sliderYear")
                              .property("value");
-          currentOccupancy = occupancies[j];
-          updateMap(data, year, currentOccupancy);
-          d3.select("#occupancyDropdown")
-            .property("value", currentOccupancy);
+          var currOcc = occupancies[j];
+          if (currentOccupancy !== currOcc) {
+            currentOccupancy = currOcc;
+            updateMap(data, chosenYear, currentOccupancy);
+            d3.select("#occupancyDropdown")
+              .property("value", currentOccupancy);
+          };
         };
       });
 

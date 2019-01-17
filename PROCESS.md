@@ -44,3 +44,9 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * finished functionality of stacked barchart (selecting occupancies still needed)
 * changed layout for now (not sure if i will change it again)
 * added navbar ( buttons inside of the navbar ) for more clearity
+
+# day 9
+* added description dropdown for meaning of occupancies (descriptions still needs to be added)
+* added legend
+* sorted navbar better, still needs to be centered properly
+* stopped re-refreshing when clicking on bar/pie when current occupancy is already the occupancy being clicked
