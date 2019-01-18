@@ -7,7 +7,7 @@ Creates: interactive map of the Netherlands
 */
 
 
-function mapNetherlands(data, year, currentOccupancy) {
+function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
   /*
   Creates map of the Netherlands
   */
@@ -60,7 +60,7 @@ function mapNetherlands(data, year, currentOccupancy) {
       map: 'nl_merc',
       backgroundColor: '#ece7f2',
       regionStyle: {
-        hover: { 'fill-opacity': 1 }
+        hover: { 'fill-opacity': 0.5 }
       },
       series: {
         regions: [{
@@ -97,24 +97,25 @@ function mapNetherlands(data, year, currentOccupancy) {
       onRegionClick: function(e, regio, code) {
         var province = provinces[Object.keys(dataMapFull).indexOf(regio)];
         var chosenYear = d3.select("#sliderYear").property("value");
-        pieUpdate(data, province, chosenYear);
         d3.select("#provinceDropdown").property("value", province);
+        var chosenProvince = d3.select("#provinceDropdown").property("value")
+        pieUpdate(data, chosenProvince, chosenYear, currentOccupancies, true);
       }
     })
   });
 };
 
 
-function updateMap(data, year, currentOccupancy) {
+function updateMap(data, year, currentOccupancy, currentOccupancies) {
   /*
   reset map and legend
   */
   var mapObject = $('#mapDiv').vectorMap('get', 'mapObject').remove()
-  mapNetherlands(data, year, currentOccupancy);
+  mapNetherlands(data, year, currentOccupancy, currentOccupancies);
 };
 
 
-function yearUpdateMap(data, year, currentOccupancy) {
+function yearUpdateMap(data, year, currentOccupancy, currentOccupancies) {
 
   // get data
   var dataList = [];

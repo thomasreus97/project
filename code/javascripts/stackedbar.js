@@ -7,23 +7,23 @@ Creates: stacked barchart
 */
 
 
-function stackedBarChart(data, year, occupancies) {
+function stackedBarChart(data, year, currentOccupancies) {
   /*
   initial barchart
   */
 
   // create scale functions for selected year
-  var scales = scaleMaker(data, year, occupancies);
+  var scales = scaleMaker(data, year, currentOccupancies);
 
   // create axes
   axesMaker(scales, year);
 
   // plot the barchart
-  barGraphUpdater(data, scales, year, occupancies);
+  barGraphUpdater(data, scales, year, currentOccupancies);
 };
 
 
-function scaleMaker(data, year, occupancies) {
+function scaleMaker(data, year, currentOccupancies) {
   /*
   First seperates the different data and then
   creates the scale functions for these data
@@ -37,9 +37,9 @@ function scaleMaker(data, year, occupancies) {
     if (province === "Nederland") {
       continue
     };
-    for (var i in occupancies){
-      if (data[province][year][occupancies[i]]) {
-        sum += data[province][year][occupancies[i]];
+    for (var i in currentOccupancies){
+      if (data[province][year][currentOccupancies[i]]) {
+        sum += data[province][year][currentOccupancies[i]];
       };
     };
     if (sum > 0) {
@@ -59,8 +59,8 @@ function scaleMaker(data, year, occupancies) {
                     .range([3 * margin / 5, width]);
 
   var yScaleBar = d3.scaleLinear()
-                    .domain([0, Math.round(d3.max(yDataBar) + 500 -
-                                           d3.max(yDataBar) % 500)])
+                    .domain([0, Math.round(d3.max(yDataBar) + 10 -
+                                           d3.max(yDataBar) % 10)])
                     .range([height - margin, margin]);
 
   return [xScaleBar, yScaleBar, xDataBar.length, [width, height]];
@@ -83,6 +83,7 @@ function axesMaker(scales, year) {
   // add title
   svg.append("text")
      .attr("class", "text")
+     .attr("id", "barchartTitle")
      .attr("transform",
            "translate("+[margin / 2, margin / 2]+")")
      .style("font-weight", "bold")
@@ -125,13 +126,13 @@ function axesMaker(scales, year) {
 };
 
 
-function updateBar(data, year, occupancies) {
+function updateBar(data, year, currentOccupancies) {
   /*
   Updates stacked barchart
   */
 
   // create scale functions for selected year
-  var scales = scaleMaker(data, year, occupancies);
+  var scales = scaleMaker(data, year, currentOccupancies);
 
   // select svg
   var svg = d3.select("#barSvg");
@@ -150,11 +151,11 @@ function updateBar(data, year, occupancies) {
      });
 
   // plot the barchart
-  barGraphUpdater(data, scales, year, occupancies);
+  barGraphUpdater(data, scales, year, currentOccupancies);
 };
 
 
-function barGraphUpdater(data, scales, year, occupancies) {
+function barGraphUpdater(data, scales, year, currentOccupancies) {
   /*
   update the bars
   */
@@ -168,8 +169,8 @@ function barGraphUpdater(data, scales, year, occupancies) {
   for (var i in data) {
     if (i !== "Nederland" && scales[0](i)) {
       provinces.push(i);
-      for (var j in occupancies) {
-        var dataValue = data[i][year][occupancies[j]];
+      for (var j in currentOccupancies) {
+        var dataValue = data[i][year][currentOccupancies[j]];
         if (dataValue) {
           dataListBar.push(dataValue);
         }
@@ -183,24 +184,44 @@ function barGraphUpdater(data, scales, year, occupancies) {
   // update the bars
   var bars = svg.selectAll("rect").data(dataListBar);
   var step = 0;
+
+  // list will all attributes
   var attrs = function(selection) {
-    selection.attr("width", (scales[3][0] - margin) / scales[2] + "px")
+    selection.attr("stroke", "black")
+
+             // give strokewidth when its the current occupancy
+             .attr("stroke-width", function(d, i) {
+               var j = i % currentOccupancies.length;
+               var selectedOccupancy = d3.select("#occupancyDropdown")
+                                         .property("value");
+               if (selectedOccupancy === currentOccupancies[j]) {
+                 d3.select(this).moveToFront();
+                 return 3;
+               }
+               else {
+                 d3.select(this).moveToBack();
+                 return 0;
+               };
+             })
+
+             // give width to bars
+             .attr("width", (scales[3][0] - margin) / scales[2] + "px")
 
              // add color of occupancy
              .attr("fill", function(d, i) {
-               var j = i % occupancies.length;
-               return occupancyColors[occupancies[j]];
+               var j = i % currentOccupancies.length;
+               return occupancyColors[currentOccupancies[j]];
              })
 
              // assign the same x for all stacked
              .attr("x", function(d, i) {
-               var j = parseInt(i / occupancies.length);
+               var j = parseInt(i / currentOccupancies.length);
                return scales[0](provinces[j]) + 1 + "px"
              })
 
              // add height for every province
              .attr("y", function(d, i) {
-               var j = i % occupancies.length;
+               var j = i % currentOccupancies.length;
                if (j === 0) {
                  step = 0;
                };
@@ -213,14 +234,14 @@ function barGraphUpdater(data, scales, year, occupancies) {
                return scales[3][1] - margin - scales[1](d) + "px";
              });
   };
-
+  bars.exit().remove();
   bars.enter().append('rect').call(attrs)
       .on("mouseover", function(d, i){
-            var j = i % occupancies.length;
+            var j = i % currentOccupancies.length;
             d3.select(this)
               .attr("opacity", 0.5);
             return (tooltip.style("visibility", "visible")
-                           .text(occupancies[j] + ": " + d))
+                           .text(currentOccupancies[j] + ": " + d))
                            .style("z-index", 9999);
       })
       .on("mouseout", function(){
@@ -234,20 +255,24 @@ function barGraphUpdater(data, scales, year, occupancies) {
                       .style("left", event.clientX + "px");
       })
       .on("click", function(d, i) {
-        var j = i % occupancies.length;
-        if (occupancies[j] !== "Undefined"){
+        var j = i % currentOccupancies.length;
+        if (currentOccupancies[j] !== "Undefined"){
           var chosenYear = d3.select("#sliderYear")
                              .property("value");
-          var currOcc = occupancies[j];
+          var chosenName = d3.select("#provinceDropdown")
+                             .property("value");
+          var currOcc = currentOccupancies[j];
           if (currentOccupancy !== currOcc) {
             currentOccupancy = currOcc;
-            updateMap(data, chosenYear, currentOccupancy);
+            updateMap(data, chosenYear, currentOccupancy, currentOccupancies);
             d3.select("#occupancyDropdown")
               .property("value", currentOccupancy);
+            updateBar(data, chosenYear, currentOccupancies);
+            pieUpdate(data, chosenName, chosenYear, currentOccupancies, true)
           };
         };
       });
 
   bars.transition().duration(10).call(attrs);
-  bars.exit().remove();
+
 };

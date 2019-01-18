@@ -33,9 +33,9 @@ window.onload = function() {
                      "Undefined": "White"};
 
   // "global" occupancys list
-  globalOccupancies = ["Total", "Traffic", "Built", "Semi-built",
-                       "Recreation", "Agricultural", "Forest & Nature",
-                       "Water", "Undefined"];
+  var globalOccupancies = ["Total", "Traffic", "Built", "Semi-built",
+                           "Recreation", "Agricultural", "Forest & Nature",
+                           "Water", "Undefined"];
 
   indentifiers = [
     "NL-GR", "NL-FR", "NL-DR", "NL-OV", "NL-FL", "NL-GE",
@@ -76,14 +76,30 @@ window.onload = function() {
               .style("line-height", "30px")
               .style("color", "white");
 
+  // function to move items to the front and back
+  // source: http://bl.ocks.org/eesur/4e0a69d57d3bfc8a82c2
+  d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+      this.parentNode.appendChild(this);
+    });
+  };
+  d3.selection.prototype.moveToBack = function() {
+    return this.each(function() {
+        var firstChild = this.parentNode.firstChild;
+        if (firstChild) {
+            this.parentNode.insertBefore(this, firstChild);
+        }
+    });
+  };
+
   // import the json file then start main function
   d3.json("data/Bodemgebruik_data.json").then(function(response) {
-    main(response);
+    main(response, globalOccupancies);
   });
 };
 
 
-function main(data) {
+function main(data, globalOccupancies) {
   /*
   Function that calls and does everything
   that has to be done create the entire
@@ -99,21 +115,20 @@ function main(data) {
   layoutMaker();
 
   // parse the data into another format
-  var newData = dataParser(data);
-
-  // assign data ranges to buttons
-  buttonFixer(newData);
-  sliderText(year);
+  var newData = dataParser(data, globalOccupancies);
 
   // make legend
-  makeLegend();
+  var currentOccupancies = makeLegend(newData, globalOccupancies);
+
+  // assign data ranges to buttons
+  buttonFixer(newData, globalOccupancies, currentOccupancies);
+  sliderText(year);
 
   // create visualisations
   currentOccupancy = occupancy;
-  mapNetherlands(newData, year, currentOccupancy);
-  piechart(newData, name, year);
-  stackedBarChart(newData, year, Object.keys(occupancyColors));
-
+  mapNetherlands(newData, year, currentOccupancy, currentOccupancies);
+  pieUpdate(newData, name, year, currentOccupancies, false);
+  stackedBarChart(newData, year, currentOccupancies);
 };
 
 
@@ -224,19 +239,10 @@ function layoutMaker(){
     .style("left", "14%")
     .style("top", document.getElementById('mainDiv').clientHeight / 2 -
            margin + "px");
-
-  // d3.select("#description")
-  //   .on("click", function(){
-  //     $(function () {
-  //       $('.example-popover').popover({
-  //         container: 'body'
-  //       });
-  //     });
-  //   });
 };
 
 
-function dataParser(data) {
+function dataParser(data, globalOccupancies) {
   /*
   Put all sub-occupations into their "global" occupation
   */
@@ -273,7 +279,7 @@ function dataParser(data) {
         };
 
         // add value to sum
-        if (value !== ".") {
+        if (value !== "." && value !== "") {
           if (sumValue) {
             sumValue += parseInt(value);
           }
@@ -305,7 +311,7 @@ function dataParser(data) {
 };
 
 
-function buttonFixer(data) {
+function buttonFixer(data, globalOccupancies, currentOccupancies) {
   /*
   Add province names to dropdown
   Add year range to year slider
@@ -314,11 +320,11 @@ function buttonFixer(data) {
   // get all years, occupancies and provinces
   var provinces = Object.keys(data);
   var years = Object.keys(data[provinces[0]]);
-  var occupancies = globalOccupancies;
+  var descriptions = globalOccupancies.slice();
+  descriptions[0] = "Descriptions";
+  var occupancies = globalOccupancies.slice();
   occupancies.pop();
   occupancies.shift();
-  var descriptions = globalOccupancies;
-  globalOccupancies[0] = "Descriptions"
 
   // create slider and select
   var slider = d3.select("#sliderYear");
@@ -360,23 +366,27 @@ function buttonFixer(data) {
   // add interactivity to occupancy dropdown
   occupancyDrop.on("input", function() {
     var chosenYear = slider.property("value");
+    var chosenProvince = provinceDrop.property("value");
     currentOccupancy = this.value;
-    updateMap(data, chosenYear, currentOccupancy);
+    updateMap(data, chosenYear, currentOccupancy, currentOccupancies);
+    updateBar(data, chosenYear, currentOccupancies);
+    pieUpdate(data, chosenProvince, chosenYear, currentOccupancies, true);
   });
 
   // add interactivity to year slider
-  slider.on("input", function(){
+  slider.on("input", function() {
     sliderText(this.value);
     var chosenProvince = provinceDrop.property("value");
-    pieUpdate(data, chosenProvince, this.value);
-    yearUpdateMap(data, this.value, currentOccupancy);
-    updateBar(data, this.value, Object.keys(occupancyColors));
+    pieUpdate(data, chosenProvince, this.value, currentOccupancies, true);
+    yearUpdateMap(data, this.value, currentOccupancy, currentOccupancies);
+    updateBar(data, this.value, currentOccupancies);
+    d3.select("#barchartTitle").text(this.value);
   });
 
   // add interactivity to the select
   provinceDrop.on("input", function() {
     var chosenYear = slider.property("value");
-    pieUpdate(data, this.value, chosenYear);
+    pieUpdate(data, this.value, chosenYear, currentOccupancies, true);
   });
 
   // add description show to descriptionDrop

@@ -50,3 +50,9 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * added legend
 * sorted navbar better, still needs to be centered properly
 * stopped re-refreshing when clicking on bar/pie when current occupancy is already the occupancy being clicked
+
+# day 10
+* added interactivity between legend, piechart and (stacked)barchart
+* added an indicator for selected occupancy map: stroke in bar and pie
+* added an indicator for selected occupancies bar: opacity in legend and pie
+* this created difficulties with my barchartupdate (TODO)
