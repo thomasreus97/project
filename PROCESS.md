@@ -56,3 +56,7 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * added an indicator for selected occupancy map: stroke in bar and pie
 * added an indicator for selected occupancies bar: opacity in legend and pie
 * this created difficulties with my barchartupdate (TODO)
+
+# day 11
+* fixed barchart (i think the visual aspect can still be improved)
+* improved pie chart updating to be smoother

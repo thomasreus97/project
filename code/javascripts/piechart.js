@@ -9,10 +9,7 @@ Two functions;
 */
 
 
-function pieUpdate(data, name, year, currentOccupancies, update) {
-  /*
-  Update pie chart
-  */
+function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
 
   // select svg
   var svg = d3.select("#mainDiv").select("#pieSvg");
@@ -48,149 +45,185 @@ function pieUpdate(data, name, year, currentOccupancies, update) {
 
   // show message when no data avaiable
   if (noData) {
+    svg.selectAll("#noData").remove();
     svg.append("text")
        .attr("id", "noData")
        .attr("transform",
-             "translate(" + [width / 2 - margin, width / 3 + margin] + ")")
+             "translate(" + [width / 2 - margin / 2, width / 3 + margin] + ")")
        .text("No Data Available");
   }
   else {
     svg.selectAll("#noData").remove();
   };
 
-  // create or select g
-  if (update) {
-
-    // select group
-    var group = svg.select("#groupG")
-  }
-  else {
-
-    // append g to svg
-    var group = svg.append("g")
-                   .attr("id", "groupG")
-                   .style("position", "absolute")
-                   .attr("transform", "translate("+[width / 2,
-                                                    width / 3 + margin]+")");
+  // create g
+  if (!updateQuestion) {
+    svg.append("g")
+       .attr("class", "slices")
+       .attr("id", "groupG")
+       .style("position", "absolute")
+       .attr("transform", "translate("+[width / 2,
+                                        width / 3 + margin]+")");
   };
+
+  // create pie function
+  var pie = d3.pie()
+              .padAngle(0.01)
+              .sort(null)
+              .value(function(d) {
+                return d;
+              });
 
   // define arc
   var arc = d3.arc()
-              .innerRadius(0)
+              .innerRadius(width / 20)
               .outerRadius(width / 3);
 
-  // define the pie
-  var pie = d3.pie()
-              .value(function(d) {return d})
-              .sort(null);
+  // call update function
+  update(dataList);
 
-  // create arcs with the data
-  var pies = group.datum(dataList).selectAll("path").data(pie);
+  function update(dataList) {
+    /*
+    source: https://bl.ocks.org/rshaker/225c6df494811f46f6ea53eba63da817
+    */
 
-  pies.exit().remove();
+    var attrs = function(selection) {
+      selection
+        .attr("stroke", "black")
+        .attr("stroke-width", function(d, i) {
+          var currOcc = dataKeys[i];
+          if (currentOccupancy === currOcc) {
+            return 3;
+          }
+          else {
+            return 0;
+          };
+        })
+        .attr("opacity", function(d, i) {
+          var currOcc = dataKeys[i];
+          if (currentOccupancies.indexOf(currOcc) > -1) {
+            return 1;
+          }
+          else {
+            return 0.3;
+          };
+        })
+        .on("click", function(d, i) {
 
-  // enter new data
-  pies.enter().append("path")
-              .attr("d", arc)
-              .attr("fill", function(d) {
-                return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
-              });
+          // current occupancy, year and name
+          var currOcc = dataKeys[i];
+          var chosenYear = d3.select("#sliderYear").property("value");
+          var chosenName = d3.select("#provinceDropdown").property("value");
 
-  // transition updated data
-  pies.transition()
-      .duration(10)
-      .attr("d", arc)
-      .attr("fill", function(d) {
-        return occupancyColors[dataKeys[dataList.indexOf(d.data)]];
-      });
+          // change legend opacities when occupancy wasnt selected
+          // and update barchart and piechart
+          if (currentOccupancies.indexOf(currOcc) < 0) {
+            currentOccupancies.push(currOcc);
+            updateBar(data, chosenYear, currentOccupancies);
+            pieUpdate(data, chosenName, chosenYear, currentOccupancies, true);
+            d3.selectAll("#legendBlocks")
+              .attr("opacity", function(d) {
+                if (currentOccupancies.indexOf(d) < 0) {
+                  return 0.3;
+                }
+                else {
+                  return 1;
+                };
+              })
+          };
 
-  // update on click with new data
-  svg.selectAll("path")
-     .attr("stroke", "black")
-     .attr("stroke-width", function(d) {
-       var currOcc = dataKeys[dataList.indexOf(d.data)];
-       if (currentOccupancy === currOcc) {
-         d3.select(this).moveToFront();
-         return 3;
-       }
-       else {
-         d3.select(this).moveToBack();
-         return 0;
-       };
-     })
-     .attr("opacity", function(d) {
-       var currOcc = dataKeys[dataList.indexOf(d.data)];
-       if (currentOccupancies.indexOf(currOcc) > -1) {
-         return 1;
-       }
-       else {
-         return 0.3;
-       };
-     })
-     .on("click", function(d) {
+          // discriminate Undefined and redefine currentOccupancy when changed
+          // update map
+          if (currOcc !== "Undefined" && currOcc !== currentOccupancy) {
+              currentOccupancy = currOcc;
+              d3.select("#occupancyDropdown")
+                .property("value", currentOccupancy);
+              updateMap(data, chosenYear, currOcc, currentOccupancies);
+              updateBar(data, chosenYear, currentOccupancies);
+              pieUpdate(data, chosenName, chosenYear, currentOccupancies, true);
+          };
+        })
+        .on("mouseover", function(d, i) {
+          d3.select(this)
+            .attr("opacity", 0.5);
+          return tooltip.style("visibility", "visible")
+                        .text(dataKeys[i] +
+                              ": " + d.data)
+                        .style("z-index", 9999);
+        })
+        .on("mouseout", function(d, i) {
+          d3.select(this)
+            .attr("opacity", function() {
+              var currOcc = dataKeys[i];
+              if (currentOccupancies.indexOf(currOcc) > -1) {
+                return 1;
+              }
+              else {
+                return 0.3;
+              };
+            })
+          return (tooltip.style("visibility", "hidden"));
+        })
+        .on("mousemove", function(d, i) {
+          return tooltip.style("top", event.clientY -
+                               param.height / 8 + "px")
+                        .style("left", event.clientX + "px")
+        });
+      };
 
-       // current occupancy, year and name
-       var currOcc = dataKeys[dataList.indexOf(d.data)];
-       var chosenYear = d3.select("#sliderYear").property("value");
-       var chosenName = d3.select("#provinceDropdown").property("value");
+    var duration = 500;
 
-       // discriminate Undefined and redefine currentOccupancy when changed
-       // update map
-       if (currOcc !== "Undefined" && currOcc !== currentOccupancy) {
-           currentOccupancy = currOcc;
-           d3.select("#occupancyDropdown")
-             .property("value", currentOccupancy);
-           updateMap(data, chosenYear, currOcc, currentOccupancies);
-           updateBar(data, chosenYear, currentOccupancies);
-           pieUpdate(data, chosenName, chosenYear, currentOccupancies, true);
-       };
+    var oldData = svg.select(".slices")
+                     .selectAll("path")
+                     .data().map(function(d) { return d; });
 
-       // change legend opacities when occupancy wasnt selected
-       // and update barchart and piechart
-       if (currentOccupancies.indexOf(currOcc) < 0) {
-         currentOccupancies.push(currOcc);
-         updateBar(data, chosenYear, currentOccupancies);
-         pieUpdate(data, chosenName, chosenYear, currentOccupancies, true);
-         d3.selectAll(legendBlocks)
-           .attr("opacity", function(d) {
-             if (currentOccupancies.indexOf(d) < 0) {
-               return 0.3;
-             }
-             else {
-               return 1;
-             };
-           })
-       };
-     })
-     .on("mouseover", function(d) {
-       d3.select(this)
-         .attr("opacity", 0.5);
-       return (tooltip.style("visibility", "visible")
-                      .text(dataKeys[dataList.indexOf(d.data)] +
-                            ": " + d.data))
-                      .style("z-index", 9999);
-     })
-     .on("mouseout", function() {
-       d3.select(this)
-         .attr("opacity", function(d) {
-           var currOcc = dataKeys[dataList.indexOf(d.data)];
-           if (currentOccupancies.indexOf(currOcc) > -1) {
-             return 1;
-           }
-           else {
-             return 0.3;
-           };
+    if (oldData.length == 0) {
+      oldData = dataList;
+    };
+
+    var slice = svg.select(".slices")
+                   .selectAll("path")
+                   .data(pie(oldData));
+
+    slice.enter()
+         .insert("path")
+         .attr("class", "slice")
+         .each(function(d) {
+           this._current = d;
+         });
+
+    slice = svg.select(".slices")
+               .selectAll("path")
+               .data(pie(dataList));
+
+    slice.transition()
+         .duration(duration)
+         .attr("fill", function(d, i) {
+           return occupancyColors[dataKeys[i]];
          })
-       return (tooltip.style("visibility", "hidden"));
-     })
-     .on("mousemove", function(d, i) {
-       return tooltip.style("top", event.clientY -
-                            param.height / 8 + "px")
-                     .style("left", event.clientX + "px")
-     });
+         .attrTween("d", function(d) {
+           var interpolate = d3.interpolate(this._current, d);
+           var _this = this;
+           return function(t) {
+             _this._current = interpolate(t);
+             return arc(_this._current);
+           };
+         });
+
+    slice = svg.select(".slices")
+               .selectAll("path")
+               .data(pie(dataList))
+               .call(attrs);
+
+    slice.exit()
+         .transition()
+         .delay(duration)
+         .duration(0)
+         .remove();
+  };
 
   // create or update title
-  if (update) {
+  if (updateQuestion) {
 
     // update title
     d3.select("#pieTitle")

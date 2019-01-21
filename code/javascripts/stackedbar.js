@@ -181,11 +181,8 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
     };
   };
 
-  // update the bars
-  var bars = svg.selectAll("rect").data(dataListBar);
-  var step = 0;
-
   // list will all attributes
+  var step = 0;
   var attrs = function(selection) {
     selection.attr("stroke", "black")
 
@@ -195,11 +192,9 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
                var selectedOccupancy = d3.select("#occupancyDropdown")
                                          .property("value");
                if (selectedOccupancy === currentOccupancies[j]) {
-                 d3.select(this).moveToFront();
                  return 3;
                }
                else {
-                 d3.select(this).moveToBack();
                  return 0;
                };
              })
@@ -231,18 +226,26 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
 
              // scale height
              .attr("height", function(d) {
-               return scales[3][1] - margin - scales[1](d) + "px";
+               var h = scales[3][1] - margin - scales[1](d) - 1;
+               if (h > 0) {
+                 return h + "px";
+               }
+               else {
+                 return "0px";
+               };
              });
   };
-  bars.exit().remove();
+
+  var bars = d3.select("#barSvg").selectAll("rect").data(dataListBar);
+
   bars.enter().append('rect').call(attrs)
       .on("mouseover", function(d, i){
-            var j = i % currentOccupancies.length;
-            d3.select(this)
-              .attr("opacity", 0.5);
-            return (tooltip.style("visibility", "visible")
-                           .text(currentOccupancies[j] + ": " + d))
-                           .style("z-index", 9999);
+        var j = i % currentOccupancies.length;
+        d3.select(this)
+          .attr("opacity", 0.5);
+        return (tooltip.style("visibility", "visible")
+                       .text(currentOccupancies[j] + ": " + d))
+                       .style("z-index", 9999);
       })
       .on("mouseout", function(){
         d3.select(this)
@@ -273,6 +276,11 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
         };
       });
 
-  bars.transition().duration(10).call(attrs);
+  bars = d3.select("#barSvg").selectAll("rect").data(dataListBar);
 
+  bars.transition().duration(500).call(attrs);
+
+  bars = d3.select("#barSvg").selectAll("rect").data(dataListBar);
+
+  bars.exit().remove();
 };

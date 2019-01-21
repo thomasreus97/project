@@ -76,22 +76,6 @@ window.onload = function() {
               .style("line-height", "30px")
               .style("color", "white");
 
-  // function to move items to the front and back
-  // source: http://bl.ocks.org/eesur/4e0a69d57d3bfc8a82c2
-  d3.selection.prototype.moveToFront = function() {
-    return this.each(function(){
-      this.parentNode.appendChild(this);
-    });
-  };
-  d3.selection.prototype.moveToBack = function() {
-    return this.each(function() {
-        var firstChild = this.parentNode.firstChild;
-        if (firstChild) {
-            this.parentNode.insertBefore(this, firstChild);
-        }
-    });
-  };
-
   // import the json file then start main function
   d3.json("data/Bodemgebruik_data.json").then(function(response) {
     main(response, globalOccupancies);
@@ -127,7 +111,7 @@ function main(data, globalOccupancies) {
   // create visualisations
   currentOccupancy = occupancy;
   mapNetherlands(newData, year, currentOccupancy, currentOccupancies);
-  pieUpdate(newData, name, year, currentOccupancies, false);
+  pieUpdate(newData, name, year, currentOccupancies, false, false);
   stackedBarChart(newData, year, currentOccupancies);
 };
 
