@@ -26,6 +26,14 @@ p {
   color: white;
 }
 
+ul {
+   list-style: none;
+   text-align: center;
+}
+
+li {
+   display: inline-block;
+}
 /*
 Below css from:
 https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position

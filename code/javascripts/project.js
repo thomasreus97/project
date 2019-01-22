@@ -69,7 +69,7 @@ window.onload = function() {
               .style("position", "fixed")
               .style("text-align", "center")
               .style("height", "28px")
-              .style("width", "150px")
+              .style("width", "175px")
               .style("visibility", "hidden")
               .style("background", "black")
               .style("border-radius", "5px")
@@ -373,7 +373,8 @@ function buttonFixer(data, globalOccupancies, currentOccupancies) {
     pieUpdate(data, chosenProvince, this.value, currentOccupancies, true);
     yearUpdateMap(data, this.value, currentOccupancy, currentOccupancies);
     updateBar(data, this.value, currentOccupancies);
-    d3.select("#barchartTitle").text(this.value);
+    d3.select("#barchartTitle")
+      .text("Distribution of occupancies per province in " + this.value);
   });
 
   // add interactivity to the select

@@ -229,7 +229,7 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
     d3.select("#pieTitle")
       .transition()
       .attr("class", "text")
-      .text(name + " (" + year + ")");
+      .text("Distribution occupancies of " + name + " in " + year);
   }
   else {
 
@@ -239,6 +239,6 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
        .attr("id", "pieTitle")
        .attr("transform",
              "translate("+[margin / 2, margin / 2]+")")
-       .text(name + " (" + year + ")");
+       .text("Distribution occupancies of " + name + " in " + year);
     };
 };

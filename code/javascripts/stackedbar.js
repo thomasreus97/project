@@ -86,7 +86,7 @@ function axesMaker(scales, year) {
      .attr("id", "barchartTitle")
      .attr("transform",
            "translate("+[margin / 2, margin / 2]+")")
-     .text(year);
+     .text("Distribution of occupancies per province in " + year);
 
   // plot x-axis
   svg.append("g")
