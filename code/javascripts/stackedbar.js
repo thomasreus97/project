@@ -56,12 +56,12 @@ function scaleMaker(data, year, currentOccupancies) {
   // calculate scales
   var xScaleBar = d3.scaleBand()
                     .domain(xDataBar)
-                    .range([3 * margin / 5, width]);
+                    .range([4 * margin / 5, width]);
 
   var yScaleBar = d3.scaleLinear()
                     .domain([0, Math.round(d3.max(yDataBar) + 10 -
                                            d3.max(yDataBar) % 10)])
-                    .range([height - margin, margin]);
+                    .range([height - 1.5 * margin, margin]);
 
   return [xScaleBar, yScaleBar, xDataBar.length, [width, height]];
 };
@@ -86,15 +86,13 @@ function axesMaker(scales, year) {
      .attr("id", "barchartTitle")
      .attr("transform",
            "translate("+[margin / 2, margin / 2]+")")
-     .style("font-weight", "bold")
-     .style("font-size", "20")
      .text(year);
 
   // plot x-axis
   svg.append("g")
      .attr("class", "axis")
      .attr("id", "xAxis")
-     .attr("transform", "translate(" + [0, scales[3][1] - margin] + ")")
+     .attr("transform", "translate(" + [0, scales[3][1] - 1.5 * margin] + ")")
      .call(xAxis)
 
      // this part adapted from: http://bl.ocks.org/d3noob/ccdcb7673cdb3a796e13
@@ -111,7 +109,7 @@ function axesMaker(scales, year) {
   svg.append("g")
      .attr("class", "axis")
      .attr("id", "yAxis")
-     .attr("transform", "translate(" + [3 * margin / 5, 0] + ")")
+     .attr("transform", "translate(" + [4 * margin / 5, 0] + ")")
      .call(yAxis);
 
   // y label
@@ -119,7 +117,7 @@ function axesMaker(scales, year) {
      .attr("class", "text")
      .attr("transform", "rotate(-90)")
      .attr("x", - scales[3][1] / 3)
-     .attr("y", 0)
+     .attr("y", - 20)
      .attr("dy", "1em")
      .style("text-anchor", "middle")
      .text("Area covered (km\xB2)");
@@ -220,13 +218,13 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
                if (j === 0) {
                  step = 0;
                };
-               step += scales[3][1] - margin - scales[1](d);
-               return scales[3][1] - margin - step + "px";
+               step += scales[3][1] - 1.5 * margin - scales[1](d);
+               return scales[3][1] - 1.5 * margin - step + "px";
              })
 
              // scale height
              .attr("height", function(d) {
-               var h = scales[3][1] - margin - scales[1](d) - 1;
+               var h = scales[3][1] - 1.5 * margin - scales[1](d) - 1;
                if (h > 0) {
                  return h + "px";
                }

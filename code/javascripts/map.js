@@ -54,6 +54,10 @@ function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
   // print message when no data available
   errorMessage(colorNanProv, dataList);
 
+  // change title
+  d3.select("#mapTitle").text("Km\xB2 " + currentOccupancy + " per province" +
+                              " in " + year);
+
   // place map nl, adapted from: http://jvectormap.com/
   $(function(){
     $('#mapDiv').vectorMap({
@@ -110,12 +114,17 @@ function updateMap(data, year, currentOccupancy, currentOccupancies) {
   /*
   reset map and legend
   */
-  var mapObject = $('#mapDiv').vectorMap('get', 'mapObject').remove()
+  var mapObject = $('#mapDiv').vectorMap('get', 'mapObject').remove();
   mapNetherlands(data, year, currentOccupancy, currentOccupancies);
 };
 
 
 function yearUpdateMap(data, year, currentOccupancy, currentOccupancies) {
+
+  // update title
+  d3.select("#mapTitle").transition()
+                        .text("Km\xB2 " + currentOccupancy + " per province" +
+                              " in " + year);
 
   // get data
   var dataList = [];

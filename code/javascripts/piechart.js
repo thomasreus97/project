@@ -49,7 +49,7 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
     svg.append("text")
        .attr("id", "noData")
        .attr("transform",
-             "translate(" + [width / 2 - margin / 2, width / 3 + margin] + ")")
+             "translate(" + [width / 2 - margin / 1.5, width / 3 + margin] + ")")
        .text("No Data Available");
   }
   else {
@@ -235,12 +235,10 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
 
     // add title
     svg.append("text")
-      .attr("class", "text")
-      .attr("id", "pieTitle")
-      .attr("transform",
-            "translate("+[margin / 2, margin / 2]+")")
-      .style("font-weight", "bold")
-      .style("font-size", "20")
-      .text(name + " (" + year + ")");
-   };
+       .attr("class", "text")
+       .attr("id", "pieTitle")
+       .attr("transform",
+             "translate("+[margin / 2, margin / 2]+")")
+       .text(name + " (" + year + ")");
+    };
 };

@@ -12,6 +12,8 @@ body {
 html * {
   text-align: center;
   font-family: arial;
+  font-weight: bold;
+  font-size: medium;
 }
 p {
   width: 500px;

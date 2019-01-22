@@ -70,7 +70,7 @@ function legendPart(range, number, name) {
 
   svg.append("g")
      .attr("class", name)
-     .attr("transform", "translate(" + [number * width / 4, height / 8] + ")");
+     .attr("transform", "translate(" + [number * width / 4, height / 5] + ")");
 
   var legOrd = d3.legendColor()
                  .shape("path", d3.symbol().type(d3.symbolSquare).size(500)())

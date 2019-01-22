@@ -60,3 +60,6 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 # day 11
 * fixed barchart (i think the visual aspect can still be improved)
 * improved pie chart updating to be smoother
+
+# day 12
+* added title to map

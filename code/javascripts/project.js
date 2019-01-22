@@ -19,7 +19,7 @@ window.onload = function() {
   param = {
     height: 600,
     width: 400,
-    radius: 200
+    radius: 200,
   };
 
   // color list for different occupations
@@ -39,7 +39,7 @@ window.onload = function() {
 
   indentifiers = [
     "NL-GR", "NL-FR", "NL-DR", "NL-OV", "NL-FL", "NL-GE",
-    "NL-UT", "NL-NH", "NL-ZH", "NL-ZE", "NL-NB", "NL-LI"
+    "NL-UT", "NL-NH", "NL-ZH", "NL-ZE", "NL-NB", "NL-LI",
   ];
 
   colorScales = {"Traffic": ['#d8d8d8', '#808080'],
@@ -140,8 +140,9 @@ function layoutMaker(){
     .attr("id", "mapDiv")
     .style("position", "absolute")
     .style("left", "3%")
+    .style("top", "10%")
     .style("width", "30%")
-    .style("height", "95%");
+    .style("height", "85%");
 
   // piechart svg
   d3.select("#mainDiv")
@@ -162,13 +163,21 @@ function layoutMaker(){
     .style("height", "40%")
     .style("bottom", "0px");
 
+  // title map div
+  d3.select("#mainDiv")
+    .append("div")
+    .attr("id", "mapTitle")
+    .style("position", "absolute")
+    .style("width", "30%")
+    .style("top", margin / 3 + "px");
+
   // stacked barchart svg
   d3.select("#mainDiv")
     .append("svg")
     .attr("id", "barSvg")
     .style("position", "absolute")
     .style("left", "64.5%")
-    .style("width", "30%")
+    .style("width", "33%")
     .style("height", "95%");
 
   // button for description in navbar
