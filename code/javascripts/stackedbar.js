@@ -49,14 +49,14 @@ function scaleMaker(data, year, currentOccupancies) {
   };
 
   // get width and height of svg
-  var svgSize = document.getElementById('barSvg');
+  var svgSize = document.getElementById("barSvg");
   var width = svgSize.clientWidth;
   var height = svgSize.clientHeight;
 
   // calculate scales
   var xScaleBar = d3.scaleBand()
                     .domain(xDataBar)
-                    .range([4 * margin / 5, width]);
+                    .range([4 * margin / 5, 33 * width / 34]);
 
   var yScaleBar = d3.scaleLinear()
                     .domain([0, Math.round(d3.max(yDataBar) + 10 -
@@ -117,14 +117,14 @@ function axesMaker(scales, year) {
      .attr("class", "text")
      .attr("transform", "rotate(-90)")
      .attr("x", - scales[3][1] / 3)
-     .attr("y", - 20)
+     .attr("y", 0)
      .attr("dy", "1em")
      .style("text-anchor", "middle")
      .text("Area covered (km\xB2)");
 };
 
 
-function updateBar(data, year, currentOccupancies) {
+function updateBar(data, year, currentOccupancies, legend) {
   /*
   Updates stacked barchart
   */
@@ -149,11 +149,11 @@ function updateBar(data, year, currentOccupancies) {
      });
 
   // plot the barchart
-  barGraphUpdater(data, scales, year, currentOccupancies);
+  barGraphUpdater(data, scales, year, currentOccupancies, legend);
 };
 
 
-function barGraphUpdater(data, scales, year, currentOccupancies) {
+function barGraphUpdater(data, scales, year, currentOccupancies, legend=false) {
   /*
   update the bars
   */
@@ -198,7 +198,7 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
              })
 
              // give width to bars
-             .attr("width", (scales[3][0] - margin) / scales[2] + "px")
+             .attr("width", (scales[3][0] - 4 * margin / 3) / scales[2] + "px")
 
              // add color of occupancy
              .attr("fill", function(d, i) {
@@ -218,13 +218,14 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
                if (j === 0) {
                  step = 0;
                };
-               step += scales[3][1] - 1.5 * margin - scales[1](d);
+               var stepAddition = scales[3][1] - 1.5 * margin - scales[1](d);
+               step += stepAddition;
                return scales[3][1] - 1.5 * margin - step + "px";
              })
 
              // scale height
              .attr("height", function(d) {
-               var h = scales[3][1] - 1.5 * margin - scales[1](d) - 1;
+               var h = scales[3][1] - 1.5 * margin - scales[1](d);
                if (h > 0) {
                  return h + "px";
                }
@@ -234,49 +235,92 @@ function barGraphUpdater(data, scales, year, currentOccupancies) {
              });
   };
 
-  var bars = d3.select("#barSvg").selectAll("rect").data(dataListBar);
+  var bars = d3.select("#barSvg")
+               .selectAll("rect")
+               .data(dataListBar);
 
-  bars.enter().append('rect').call(attrs)
-      .on("mouseover", function(d, i){
-        var j = i % currentOccupancies.length;
-        d3.select(this)
-          .attr("opacity", 0.5);
-        return (tooltip.style("visibility", "visible")
-                       .text(currentOccupancies[j] + ": " + d))
-                       .style("z-index", 9999);
-      })
-      .on("mouseout", function(){
-        d3.select(this)
-          .attr("opacity", 1);
-        return (tooltip.style("visibility", "hidden"));
-      })
-      .on("mousemove", function(){
-        return tooltip.style("top", event.clientY -
-                             param.height / 8 + "px")
-                      .style("left", event.clientX + "px");
-      })
-      .on("click", function(d, i) {
-        var j = i % currentOccupancies.length;
-        if (currentOccupancies[j] !== "Undefined"){
-          var chosenYear = d3.select("#sliderYear")
-                             .property("value");
-          var chosenName = d3.select("#provinceDropdown")
-                             .property("value");
-          var currOcc = currentOccupancies[j];
-          if (currentOccupancy !== currOcc) {
-            currentOccupancy = currOcc;
-            updateMap(data, chosenYear, currentOccupancy, currentOccupancies);
-            d3.select("#occupancyDropdown")
-              .property("value", currentOccupancy);
-            updateBar(data, chosenYear, currentOccupancies);
-            pieUpdate(data, chosenName, chosenYear, currentOccupancies, true)
-          };
+  if (legend) {
+    bars.enter()
+    .append("rect")
+    .on("mouseover", function(d, i){
+      var j = i % currentOccupancies.length;
+      d3.select(this)
+       .attr("opacity", 0.5);
+      return (tooltip.style("visibility", "visible")
+                    .text(currentOccupancies[j] + ": " + d))
+                    .style("z-index", 9999);
+    })
+    .on("mouseout", function(){
+      d3.select(this)
+        .attr("opacity", 1);
+      return (tooltip.style("visibility", "hidden"));
+    })
+    .on("mousemove", function(){
+      return tooltip.style("top", event.clientY -
+                           margin / 3 + "px")
+                    .style("left", event.clientX + "px");
+    })
+    .on("click", function(d, i) {
+      var j = i % currentOccupancies.length;
+      if (currentOccupancies[j] !== "Undefined"){
+        var chosenYear = d3.select("#sliderYear")
+                           .property("value");
+        var chosenName = d3.select("#provinceDropdown")
+                           .property("value");
+        var currOcc = currentOccupancies[j];
+        if (currentOccupancy !== currOcc) {
+          currentOccupancy = currOcc;
+          updateMap(data, chosenYear, currentOccupancy, currentOccupancies);
+          d3.select("#occupancyDropdown")
+            .property("value", currentOccupancy);
+          updateBar(data, chosenYear, currentOccupancies);
+          pieUpdate(data, chosenName, chosenYear, currentOccupancies, true)
         };
-      });
-
-  bars = d3.select("#barSvg").selectAll("rect").data(dataListBar);
-
-  bars.transition().duration(500).call(attrs);
+      };
+    })
+    .call(attrs).merge(bars).call(attrs);
+  }
+  else {
+    bars.enter()
+    .append("rect")
+    .on("mouseover", function(d, i){
+      var j = i % currentOccupancies.length;
+      d3.select(this)
+       .attr("opacity", 0.5);
+      return (tooltip.style("visibility", "visible")
+                    .text(currentOccupancies[j] + ": " + d))
+                    .style("z-index", 9999);
+    })
+    .on("mouseout", function(){
+      d3.select(this)
+        .attr("opacity", 1);
+      return (tooltip.style("visibility", "hidden"));
+    })
+    .on("mousemove", function(){
+      return tooltip.style("top", event.clientY -
+                           margin / 3 + "px")
+                    .style("left", event.clientX + "px");
+    })
+    .on("click", function(d, i) {
+      var j = i % currentOccupancies.length;
+      if (currentOccupancies[j] !== "Undefined"){
+        var chosenYear = d3.select("#sliderYear")
+                           .property("value");
+        var chosenName = d3.select("#provinceDropdown")
+                           .property("value");
+        var currOcc = currentOccupancies[j];
+        if (currentOccupancy !== currOcc) {
+          currentOccupancy = currOcc;
+          updateMap(data, chosenYear, currentOccupancy, currentOccupancies);
+          d3.select("#occupancyDropdown")
+            .property("value", currentOccupancy);
+          updateBar(data, chosenYear, currentOccupancies);
+          pieUpdate(data, chosenName, chosenYear, currentOccupancies, true)
+        };
+      };
+    })
+    .call(attrs).merge(bars).transition().duration(500).call(attrs);
+  };
 
   bars = d3.select("#barSvg").selectAll("rect").data(dataListBar);
 

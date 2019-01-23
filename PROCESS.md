@@ -63,3 +63,9 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 
 # day 12
 * added title to map
+
+# day 13
+* fixed navigation bar
+* decided to add extra .html pages for explaining things
+* added info buttons next to the graph to give information
+* improved bar transitions

@@ -53,7 +53,8 @@ window.onload = function() {
   // description div
   descriptionTool = d3.select("body")
                       .append("div")
-                      .style("position", "fixed")
+                      .attr("id", "descriptionToolId")
+                      .style("position", "absolute")
                       .style("text-align", "center")
                       .style("height", "200px")
                       .style("width", "200px")
@@ -169,7 +170,9 @@ function layoutMaker(){
     .attr("id", "mapTitle")
     .style("position", "absolute")
     .style("width", "30%")
-    .style("top", margin / 3 + "px");
+    .style("top", margin / 3 + "px")
+    .style("text-align", "left")
+    .style("left", 2 * margin / 3 + "px");
 
   // stacked barchart svg
   d3.select("#mainDiv")
@@ -177,51 +180,39 @@ function layoutMaker(){
     .attr("id", "barSvg")
     .style("position", "absolute")
     .style("left", "64.5%")
-    .style("width", "33%")
+    .style("width", "34%")
     .style("height", "95%");
 
-  // button for description in navbar
-  d3.select("#navBarList")
-    .append("li")
+  // dropdown provinces
+  d3.select(".topnav")
+    .append("div")
+    .attr("id", "buttonBox")
     .append("select")
-    .style("position", "relative")
-    .attr("id", "description")
-    .attr("class", "btn dropdown-toggle")
-    .style("width", 1.5 * margin + "px");
-
-  // selection dropdown for provinces
-  d3.select("#navBarList")
-    .append("li")
-    .append("select")
-    .style("position", "relative")
     .attr("id", "provinceDropdown")
-    .attr("class", "btn dropdown-toggle")
+    .attr("class", "btn btn-secondary dropdown-toggle")
     .style("width", 1.5 * margin + "px");
 
   // selection dropdown occupancy
-  d3.select("#navBarList")
-    .append("li")
+  d3.select("#buttonBox")
     .append("select")
     .attr("id", "occupancyDropdown")
-    .attr("class", "btn dropdown-toggle")
+    .attr("class", "btn btn-secondary dropdown-toggle")
     .style("width", 1.5 * margin + "px");
 
   // create year value
-  d3.select("#navBarList")
-    .append("li")
+  d3.select(".topnav")
+    .append("div")
+    .attr("id", "sliderDiv")
     .append("span")
     .attr("id", "sliderValue")
-    .text("Year:")
-    .style("color", "white");
+    .text("Year:");
 
   // create slider bar
-  d3.select("#navBarList")
-    .append("li")
+  d3.select("#sliderDiv")
     .append("input")
     .attr("id", "sliderYear")
     .attr("type", "range")
-    .attr("class", "custom-range")
-    .style("width", param.width / 2 + "px");
+    .attr("class", "custom-range");
 
   // div for error message map
   d3.select("#mainDiv")
@@ -230,8 +221,64 @@ function layoutMaker(){
     .attr("width", param.width)
     .style("position", "absolute")
     .style("left", "14%")
-    .style("top", document.getElementById('mainDiv').clientHeight / 2 -
-           margin + "px");
+    .style("top", document.getElementById('mainDiv').clientHeight / 2 + "px");
+
+  // add information images to svg's
+  d3.select("#mainDiv")
+    .append("svg")
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("id", "mapInfo")
+    .style("position", "absolute")
+    .style("left", margin / 3 + "px")
+    .style("top", margin / 3 + "px")
+    .attr("z-index", 9999)
+    .append("image")
+    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
+    .attr("width", 20)
+    .attr("height", 20);
+
+  d3.select("#mainDiv")
+    .append("svg")
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("id", "pieInfo")
+    .style("position", "absolute")
+    .style("left", "35.5%")
+    .style("top", margin / 3 + "px")
+    .attr("z-index", 9999)
+    .append("image")
+    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
+    .attr("width", 20)
+    .attr("height", 20);
+
+  d3.select("#mainDiv")
+    .append("svg")
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("id", "barInfo")
+    .style("position", "absolute")
+    .style("right", "33%")
+    .style("top", margin / 3 + "px")
+    .attr("z-index", 9999)
+    .append("image")
+    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
+    .attr("width", 20)
+    .attr("height", 20);
+
+  d3.select("#mainDiv")
+    .append("svg")
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("id", "legendInfo")
+    .style("position", "absolute")
+    .style("left", "35.5%")
+    .style("top", "60%")
+    .attr("z-index", 9999)
+    .append("image")
+    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
+    .attr("width", 20)
+    .attr("height", 20);
 };
 
 
@@ -323,7 +370,6 @@ function buttonFixer(data, globalOccupancies, currentOccupancies) {
   var slider = d3.select("#sliderYear");
   var provinceDrop = d3.select("#provinceDropdown");
   var occupancyDrop = d3.select('#occupancyDropdown');
-  var descriptionDrop = d3.select("#description")
 
   // add functionality to slider
   slider.attr("min", d3.min(years))
@@ -347,14 +393,6 @@ function buttonFixer(data, globalOccupancies, currentOccupancies) {
                .text(function (d) {
                  return d;
                });
-
-  descriptionDrop.selectAll("option")
-                 .data(descriptions)
-                 .enter()
-                 .append("option")
-                 .text(function (d) {
-                   return d;
-                 });
 
   // add interactivity to occupancy dropdown
   occupancyDrop.on("input", function() {
@@ -383,17 +421,52 @@ function buttonFixer(data, globalOccupancies, currentOccupancies) {
     pieUpdate(data, this.value, chosenYear, currentOccupancies, true);
   });
 
-  // add description show to descriptionDrop
-  descriptionDrop.on("input", function() {
-    if (this.value === "Descriptions") {
-      return descriptionTool.style("visibility", "hidden");
-    }
-    else {
+  // information buttons
+  d3.select("#mapInfo")
+    .on("click", function() {
       return descriptionTool.style("visibility", "visible")
-                            .text(descriptionFunction(this.value))
-                            .style("z-index", 9999);
-    };
-  });
+                            .text(descriptionFunction("map"))
+                            .style("z-index", 9999)
+                            .style("top", event.clientY + margin / 2 + "px")
+                            .style("left", event.clientX + "px");
+    });
+
+  d3.select("#pieInfo")
+    .on("click", function() {
+      return descriptionTool.style("visibility", "visible")
+                            .text(descriptionFunction("pie"))
+                            .style("z-index", 9999)
+                            .style("top", event.clientY + margin / 2 + "px")
+                            .style("left", event.clientX + "px");
+    });
+
+  d3.select("#barInfo")
+    .on("click", function() {
+      return descriptionTool.style("visibility", "visible")
+                            .text(descriptionFunction("bar"))
+                            .style("z-index", 9999)
+                            .style("top", event.clientY + margin / 2 + "px")
+                            .style("left", event.clientX + "px");
+    });
+
+  d3.select("#legendInfo")
+    .on("click", function() {
+      var svgSize = document.getElementById("legendInfo")
+                            .getBoundingClientRect();
+      var itemX = svgSize.right;
+      var itemY = svgSize.top;
+      return descriptionTool.style("visibility", "visible")
+                            .text(descriptionFunction("legend"))
+                            .style("z-index", 9999)
+                            .style("top", function () {
+                              var element =
+                                document.getElementById("descriptionToolId")
+                                        .getBoundingClientRect();
+                              console.log(element)
+                              return itemY - element.height + "px";
+                            })
+                            .style("left", itemX + "px");
+    });
 };
 
 

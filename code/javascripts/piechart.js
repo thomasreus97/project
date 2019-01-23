@@ -63,7 +63,7 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
        .attr("id", "groupG")
        .style("position", "absolute")
        .attr("transform", "translate("+[width / 2,
-                                        width / 3 + margin]+")");
+                                        height / 2 + margin / 2]+")");
   };
 
   // create pie function
@@ -76,8 +76,8 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
 
   // define arc
   var arc = d3.arc()
-              .innerRadius(width / 20)
-              .outerRadius(width / 3);
+              .innerRadius(height / 20)
+              .outerRadius(height / 3);
 
   // call update function
   update(dataList);
@@ -119,7 +119,7 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
           // and update barchart and piechart
           if (currentOccupancies.indexOf(currOcc) < 0) {
             currentOccupancies.push(currOcc);
-            updateBar(data, chosenYear, currentOccupancies);
+            updateBar(data, chosenYear, currentOccupancies, true);
             pieUpdate(data, chosenName, chosenYear, currentOccupancies, true);
             d3.selectAll("#legendBlocks")
               .attr("opacity", function(d) {
@@ -165,8 +165,7 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
           return (tooltip.style("visibility", "hidden"));
         })
         .on("mousemove", function(d, i) {
-          return tooltip.style("top", event.clientY -
-                               param.height / 8 + "px")
+          return tooltip.style("top", event.clientY - margin / 3 + "px")
                         .style("left", event.clientX + "px")
         });
       };

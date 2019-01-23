@@ -15,45 +15,91 @@ html * {
   font-weight: bold;
   font-size: medium;
 }
-p {
-  width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
-/* makes text of class white, white*/
-.white {
-  color: white;
-}
-
-ul {
-   list-style: none;
-   text-align: center;
-}
-
-li {
-   display: inline-block;
-}
 /*
 Below css from:
 https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position
 */
-.jvectormap-legend-cnt-v{
+.jvectormap-legend-cnt-v {
     bottom: 0;
     left: 0;
     right: auto;
     top: auto;
 }
-.jvectormap-legend-cnt-h{
+.jvectormap-legend-cnt-h {
    left: 0;
    right: auto;
 }
 
-/* https://www.bootply.com/AAcC6rXv4R */
-.navbar {
+
+/*
+source: https://www.w3schools.com/howto/howto_js_topnav.asp
+/*
+/* Add a black background color to the top navigation */
+.topnav {
   width: 100%;
+  overflow: hidden;
   position: fixed;
-  border-radius: 0;
-  height: 50px;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
   z-index: 9999;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  background-color: #333;
+  float: left;
+  color: #ece7f2;
+  text-align: center;
+  padding: 13.5px 16px;
+  text-decoration: none;
+  border-style: solid;
+  border-color: #ece7f2;
+  border-width: 2px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  color: blue;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #ece7f2;
+  color: black;
+}
+
+.topnav div {
+  background-color: #333;
+  float: left;
+  color: #ece7f2;
+  text-align: left;
+  padding: 2.75px;
+  text-decoration: none;
+  border-style: solid;
+  border-color: #ece7f2;
+  border-width: 2px;
+}
+
+#buttonBox {
+  background-color: #333;
+  float: right;
+  text-align: center;
+  padding: 9px;
+  color: black;
+  border-style: solid;
+  border-color: #ece7f2;
+  border-width: 2px;
+}
+
+.btn {
+  margin-left: 5px;
+}
+
+#sliderDiv {
+  padding: 3.4px;
+  float: right;
+  text-align: center;
+  color: #ece7f2;
 }

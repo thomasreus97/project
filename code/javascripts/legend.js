@@ -43,7 +43,7 @@ function makeLegend(data, occupanciesList) {
                      d3.select(this)
                        .attr("opacity", 1);
                    };
-                   updateBar(data, chosenYear, currentOccupancies);
+                   updateBar(data, chosenYear, currentOccupancies, true);
                    pieUpdate(data, chosenName, chosenYear, currentOccupancies,
                              true);
                  });
