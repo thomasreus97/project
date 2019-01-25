@@ -69,3 +69,9 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * decided to add extra .html pages for explaining things
 * added info buttons next to the graph to give information
 * improved bar transitions
+
+# day 14
+* improved information buttons
+
+# day 15
+* finished the description page
