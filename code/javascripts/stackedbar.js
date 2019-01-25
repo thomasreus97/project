@@ -245,6 +245,7 @@ function barGraphUpdater(data, scales, year, currentOccupancies, legend=false) {
     .on("mouseover", function(d, i){
       var j = i % currentOccupancies.length;
       d3.select(this)
+       .style("cursor", "pointer")
        .attr("opacity", 0.5);
       return (tooltip.style("visibility", "visible")
                     .text(currentOccupancies[j] + ": " + d))
@@ -286,6 +287,7 @@ function barGraphUpdater(data, scales, year, currentOccupancies, legend=false) {
     .on("mouseover", function(d, i){
       var j = i % currentOccupancies.length;
       d3.select(this)
+       .style("cursor", "pointer")
        .attr("opacity", 0.5);
       return (tooltip.style("visibility", "visible")
                     .text(currentOccupancies[j] + ": " + d))

@@ -46,6 +46,9 @@ function makeLegend(data, occupanciesList) {
                    updateBar(data, chosenYear, currentOccupancies, true);
                    pieUpdate(data, chosenName, chosenYear, currentOccupancies,
                              true);
+                 })
+                 .on("mouseover", function() {
+                   d3.select(this).style("cursor", "pointer");
                  });
 
   return currentOccupancies;
@@ -81,8 +84,4 @@ function legendPart(range, number, name) {
   svg.select(`.${name}`)
      .call(legOrd);
 
-};
-
-function descriptionFunction(input) {
-  return "information about: " + input;
 };

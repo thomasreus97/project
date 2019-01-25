@@ -15,6 +15,30 @@ html * {
   font-weight: bold;
   font-size: medium;
 }
+.describe {
+  position: relative;
+  width: 45%;
+  top: 100px;
+  float: left;
+}
+#left {
+  margin-left: 5%;
+}
+.describe p {
+  margin-left: 50px;
+  margin-right: 50px;
+  font-weight: normal;
+  text-align: center;
+  border-style: solid;
+  border-width: 4px;
+  background-color: #ece7f2;
+}
+.titleBox {
+  float: left;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
 
 /*
 Below css from:
@@ -38,6 +62,7 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
 /* Add a black background color to the top navigation */
 .topnav {
   width: 100%;
+  background-color: #ece7f2;
   overflow: hidden;
   position: fixed;
   border-style: solid;
@@ -57,6 +82,7 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
   border-style: solid;
   border-color: #ece7f2;
   border-width: 2px;
+  z-index: 9999;
 }
 
 /* Change the color of links on hover */
@@ -71,6 +97,7 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
 }
 
 .topnav div {
+  z-index: 9999;
   background-color: #333;
   float: left;
   color: #ece7f2;
@@ -102,4 +129,132 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
   float: right;
   text-align: center;
   color: #ece7f2;
+}
+
+
+/*
+css for information tooltip
+source: https://tutorialzine.com/2014/07/css-inline-help-tips
+*/
+.help-tip{
+    position: absolute;
+    text-align: center;
+    background-color: black;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 26px;
+    cursor: default;
+    z-index: 9999;
+}
+
+#mapInfo {
+  left: 20px;
+  top: 230px;
+}
+
+#pieInfo {
+  top: 230px;
+  left: 530px;
+}
+
+#barInfo {
+  top: 230px;
+  right: 500px;
+}
+
+#legendInfo {
+  top: 620px;
+  left: 550px;
+}
+
+.help-tip:before{
+    content:'?';
+    font-weight: bold;
+    color: #ece7f2;
+}
+
+.help-tip:hover p{
+    display:block;
+    top: 150%;
+    transform-origin: 100% 0%;
+
+    -webkit-animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.help-tip p{    /* The tooltip */
+    display: none;
+    text-align: left;
+    background-color: #1E2021;
+    padding: 20px;
+    width: 300px;
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    right: -4px;
+    color: #FFF;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.help-tip p:before{ /* The pointer of the tooltip */
+    position: absolute;
+    content: '';
+    width:0;
+    height: 0;
+    border:6px solid transparent;
+    border-bottom-color:#1E2021;
+    right:10px;
+    top:-12px;
+}
+
+.help-tip p:after{ /* Prevents the tooltip from being hidden */
+    width:100%;
+    height:40px;
+    content:'';
+    position: absolute;
+    top:-40px;
+    left:0;
+}
+
+#mapInfo:hover p{
+  display:block;
+  top: 150%;
+  left: -10%;
+  transform-origin: 100% 0%;
+
+  -webkit-animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+#mapInfo p:before{
+  position: absolute;
+  content: '';
+  width:0;
+  height: 0;
+  border:6px solid transparent;
+  border-bottom-color:#1E2021;
+  left:10px;
+  top:-12px;
+}
+
+/* CSS animation */
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity:0;
+        transform: scale(0.6);
+    }
+
+    100% {
+        opacity:100%;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% { opacity:0; }
+    100% { opacity:100%; }
 }

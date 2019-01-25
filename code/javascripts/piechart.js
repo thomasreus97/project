@@ -145,6 +145,7 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
         })
         .on("mouseover", function(d, i) {
           d3.select(this)
+            .style("cursor", "pointer")
             .attr("opacity", 0.5);
           return tooltip.style("visibility", "visible")
                         .text(dataKeys[i] +

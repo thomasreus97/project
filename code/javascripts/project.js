@@ -50,20 +50,6 @@ window.onload = function() {
                  "Forest & Nature": ['#57ff51', '#12820e'],
                  "Water": ['#70a1ef', '#0000FF']};
 
-  // description div
-  descriptionTool = d3.select("body")
-                      .append("div")
-                      .attr("id", "descriptionToolId")
-                      .style("position", "absolute")
-                      .style("text-align", "center")
-                      .style("height", "200px")
-                      .style("width", "200px")
-                      .style("visibility", "hidden")
-                      .style("background", "black")
-                      .style("border-radius", "5px")
-                      .style("line-height", "30px")
-                      .style("color", "white");
-
   // tooltip
   tooltip = d3.select("body")
               .append("div")
@@ -222,63 +208,6 @@ function layoutMaker(){
     .style("position", "absolute")
     .style("left", "14%")
     .style("top", document.getElementById('mainDiv').clientHeight / 2 + "px");
-
-  // add information images to svg's
-  d3.select("#mainDiv")
-    .append("svg")
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("id", "mapInfo")
-    .style("position", "absolute")
-    .style("left", margin / 3 + "px")
-    .style("top", margin / 3 + "px")
-    .attr("z-index", 9999)
-    .append("image")
-    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
-    .attr("width", 20)
-    .attr("height", 20);
-
-  d3.select("#mainDiv")
-    .append("svg")
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("id", "pieInfo")
-    .style("position", "absolute")
-    .style("left", "35.5%")
-    .style("top", margin / 3 + "px")
-    .attr("z-index", 9999)
-    .append("image")
-    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
-    .attr("width", 20)
-    .attr("height", 20);
-
-  d3.select("#mainDiv")
-    .append("svg")
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("id", "barInfo")
-    .style("position", "absolute")
-    .style("right", "33%")
-    .style("top", margin / 3 + "px")
-    .attr("z-index", 9999)
-    .append("image")
-    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
-    .attr("width", 20)
-    .attr("height", 20);
-
-  d3.select("#mainDiv")
-    .append("svg")
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("id", "legendInfo")
-    .style("position", "absolute")
-    .style("left", "35.5%")
-    .style("top", "60%")
-    .attr("z-index", 9999)
-    .append("image")
-    .attr("xlink:href", "https://openclipart.org/download/205225/About-icon.svg")
-    .attr("width", 20)
-    .attr("height", 20);
 };
 
 
@@ -360,8 +289,6 @@ function buttonFixer(data, globalOccupancies, currentOccupancies) {
   // get all years, occupancies and provinces
   var provinces = Object.keys(data);
   var years = Object.keys(data[provinces[0]]);
-  var descriptions = globalOccupancies.slice();
-  descriptions[0] = "Descriptions";
   var occupancies = globalOccupancies.slice();
   occupancies.pop();
   occupancies.shift();
@@ -406,67 +333,20 @@ function buttonFixer(data, globalOccupancies, currentOccupancies) {
 
   // add interactivity to year slider
   slider.on("input", function() {
-    sliderText(this.value);
-    var chosenProvince = provinceDrop.property("value");
-    pieUpdate(data, chosenProvince, this.value, currentOccupancies, true);
-    yearUpdateMap(data, this.value, currentOccupancy, currentOccupancies);
-    updateBar(data, this.value, currentOccupancies);
-    d3.select("#barchartTitle")
-      .text("Distribution of occupancies per province in " + this.value);
-  });
+          sliderText(this.value);
+          var chosenProvince = provinceDrop.property("value");
+          pieUpdate(data, chosenProvince, this.value, currentOccupancies, true);
+          yearUpdateMap(data, this.value, currentOccupancy, currentOccupancies);
+          updateBar(data, this.value, currentOccupancies);
+          d3.select("#barchartTitle")
+            .text("Distribution of occupancies per province in " + this.value);
+        });
 
   // add interactivity to the select
   provinceDrop.on("input", function() {
-    var chosenYear = slider.property("value");
-    pieUpdate(data, this.value, chosenYear, currentOccupancies, true);
-  });
-
-  // information buttons
-  d3.select("#mapInfo")
-    .on("click", function() {
-      return descriptionTool.style("visibility", "visible")
-                            .text(descriptionFunction("map"))
-                            .style("z-index", 9999)
-                            .style("top", event.clientY + margin / 2 + "px")
-                            .style("left", event.clientX + "px");
-    });
-
-  d3.select("#pieInfo")
-    .on("click", function() {
-      return descriptionTool.style("visibility", "visible")
-                            .text(descriptionFunction("pie"))
-                            .style("z-index", 9999)
-                            .style("top", event.clientY + margin / 2 + "px")
-                            .style("left", event.clientX + "px");
-    });
-
-  d3.select("#barInfo")
-    .on("click", function() {
-      return descriptionTool.style("visibility", "visible")
-                            .text(descriptionFunction("bar"))
-                            .style("z-index", 9999)
-                            .style("top", event.clientY + margin / 2 + "px")
-                            .style("left", event.clientX + "px");
-    });
-
-  d3.select("#legendInfo")
-    .on("click", function() {
-      var svgSize = document.getElementById("legendInfo")
-                            .getBoundingClientRect();
-      var itemX = svgSize.right;
-      var itemY = svgSize.top;
-      return descriptionTool.style("visibility", "visible")
-                            .text(descriptionFunction("legend"))
-                            .style("z-index", 9999)
-                            .style("top", function () {
-                              var element =
-                                document.getElementById("descriptionToolId")
-                                        .getBoundingClientRect();
-                              console.log(element)
-                              return itemY - element.height + "px";
-                            })
-                            .style("left", itemX + "px");
-    });
+                var chosenYear = slider.property("value");
+                pieUpdate(data, this.value, chosenYear, currentOccupancies, true);
+              });
 };
 
 
