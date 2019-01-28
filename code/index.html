@@ -1,31 +1,44 @@
+<!DOCTYPE html>
+
+<!--
+Name: Thomas Reus
+Student number: 11150041
+Project: dataprocessing
+
+HTML file for homepage:
+Imports stylesheets from css and bootstrap.
+Creates navigationbar and basic introductionary
+text for the homepage.
+-->
+
 <html lang="en">
   <head>
-    <title>Descriptions</title>
+    <title>Home</title>
     <meta charset=utf-8 />
-
-    <!-- Everything needed for the map
-     source: http://jvectormap.com/tutorials/getting-started/ -->
-    <link rel="stylesheet" href="javascripts/jquery-jvectormap-2.0.3.css"
-     type="text/css" media="screen"/>
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- style -->
     <link rel="stylesheet" href="javascripts/project.css">
-
   </head>
   <body>
 
     <!-- nav bar example
     source: https://www.w3schools.com/howto/howto_js_topnav.asp-->
     <div class="topnav">
+
+      <!-- navigationbar name + title -->
       <div>
         <span>
           Thomas Reus 11150041<br>
           Land occupancy in the Netherlands
         </span>
       </div>
+
+      <!-- navigationbar buttons for: home, visual, description and source
+      with redirection to another page when clicked
+      current page: class=active-->
       <a class="active" href="index.html">Home</a>
       <a href="visualisations.html">Visualisations</a>
       <a href="descriptions.html">Description occupancies</a>
@@ -34,17 +47,15 @@
       </a>
     </div>
 
+    <!-- dif with title + basic information about the website -->
     <div class="infoHome">
-
       <h1>Land occupany in the Netherlands</h1>
-
       <p>
         This website provides different visualisations of the land occupancy
         distribution in the Netherlands. All data used for this website is from
         the CBS and can be seen by clicking <strong>Data source (CBS)</strong>
         on the top of the page.
       </p>
-
       <p>
         According to the CBS, the land occupancy can be distributed into the
         seven different types: traffic, built, semi-built, recreation,
@@ -52,19 +63,16 @@
         types can be found by clicking
         <strong>Description occupancies</strong> on the top of the page.
       </p>
-
       <p>
         The visualisations can be viewed by clicking
         <strong>Visualisations</strong> on the top of the page. This page
         consists of the following three visualisations:
       </p>
-
       <ol>
         <li>A map of the Netherlands for one chosen occupancy.</li>
         <li>A piechart with the occupancy distribution of one chosen location.</li>
         <li>A (stacked) barchart of selected occupancies for all provinces.</li>
       </ol>
-
     </div>
 
   </body>

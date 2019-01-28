@@ -161,6 +161,9 @@ function barGraphUpdater(data, scales, year, currentOccupancies, legend=false) {
   // select svg
   var svg = d3.select("#barSvg");
 
+  // select tooltip
+  var toolTip = d3.select(".toolTip");
+
   // put all data values into one list
   var dataListBar = [];
   var provinces = [];
@@ -247,17 +250,17 @@ function barGraphUpdater(data, scales, year, currentOccupancies, legend=false) {
       d3.select(this)
        .style("cursor", "pointer")
        .attr("opacity", 0.5);
-      return (tooltip.style("visibility", "visible")
+      return (toolTip.style("visibility", "visible")
                     .text(currentOccupancies[j] + ": " + d))
                     .style("z-index", 9999);
     })
     .on("mouseout", function(){
       d3.select(this)
         .attr("opacity", 1);
-      return (tooltip.style("visibility", "hidden"));
+      return (toolTip.style("visibility", "hidden"));
     })
     .on("mousemove", function(){
-      return tooltip.style("top", event.clientY -
+      return toolTip.style("top", event.clientY -
                            margin / 3 + "px")
                     .style("left", event.clientX + "px");
     })
@@ -289,17 +292,17 @@ function barGraphUpdater(data, scales, year, currentOccupancies, legend=false) {
       d3.select(this)
        .style("cursor", "pointer")
        .attr("opacity", 0.5);
-      return (tooltip.style("visibility", "visible")
+      return (toolTip.style("visibility", "visible")
                     .text(currentOccupancies[j] + ": " + d))
                     .style("z-index", 9999);
     })
     .on("mouseout", function(){
       d3.select(this)
         .attr("opacity", 1);
-      return (tooltip.style("visibility", "hidden"));
+      return (toolTip.style("visibility", "hidden"));
     })
     .on("mousemove", function(){
-      return tooltip.style("top", event.clientY -
+      return toolTip.style("top", event.clientY -
                            margin / 3 + "px")
                     .style("left", event.clientX + "px");
     })

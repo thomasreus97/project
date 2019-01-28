@@ -3,9 +3,13 @@ Name: Thomas Reus
 Student number: 11150041
 Assignment: linked views D3
 
-background, text align and p align
+All style for everything in the project
+! indicates a new "chapter": like body, navbar,
+every html page etc.
 */
 
+
+/* ! body background and html font styles */
 body {
   background-color: #ece7f2;
 }
@@ -14,94 +18,14 @@ html * {
   font-family: arial;
   font-weight: bold;
   font-size: medium;
-  scroll-behavior: smooth;
-}
-.describe {
-  position: relative;
-  width: 45%;
-  top: 100px;
-  float: left;
-}
-#left {
-  margin-left: 5%;
-}
-.describe p {
-  margin-left: 50px;
-  margin-right: 50px;
-  font-weight: normal;
-  text-align: center;
-  border-style: solid;
-  border-width: 4px;
-  background-color: #ece7f2;
-}
-.titleBox {
-  float: left;
-  text-align: center;
-  width: 100%;
-  font-weight: bold;
-}
-
-.introductionVisualisation {
-  position: absolute;
-  text-align: left;
-  margin-top: 120px;
-  margin-left: 5%;
-  width: 50%;
-}
-
-.selectIntro {
-  position: absolute;
-  text-align: center;
-  margin-top: 120px;
-  right: 5%;
-  width: 20%;
-}
-
-.infoHome {
-  position: absolute;
-  margin-top: 100px;
-  width: 75%;
-  margin-left: 12.5%;
-  font-size: 125%;
-}
-.infoHome p {
-  text-align: left;
-  font-weight: normal;
-  font-size: 125%;
-  margin-bottom: 20px;
-}
-.infoHome li {
-  font-weight: normal;
-  text-align: left;
-  font-size: 150%;
-}
-.infoHome strong {
-  font-size: 100%;
-}
-.infoHome h1 {
-  font-size: 175%;
-  margin-bottom: 50px;
-}
-
-/*
-Below css from:
-https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position
-*/
-.jvectormap-legend-cnt-v {
-    bottom: 0;
-    left: 0;
-    right: auto;
-    top: auto;
-}
-.jvectormap-legend-cnt-h {
-   left: 0;
-   right: auto;
 }
 
 
 /*
+! style for navigationbar
 source: https://www.w3schools.com/howto/howto_js_topnav.asp
 /*
+
 /* Add a black background color to the top navigation */
 .topnav {
   width: 100%;
@@ -113,6 +37,7 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
   border-width: 2px;
   z-index: 9999;
 }
+
 /* Style the links inside the navigation bar */
 .topnav a {
   background-color: #333;
@@ -126,10 +51,12 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
   border-width: 2px;
   z-index: 9999;
 }
+
 /* Change the color of links on hover */
 .topnav a:hover {
   color: blue;
 }
+
 /* Add a color to the active/current link */
 .topnav a.active {
   background-color: #ece7f2;
@@ -171,11 +98,82 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
 }
 
 
+/* ! index.html */
+.infoHome {
+  position: absolute;
+  margin-top: 100px;
+  width: 75%;
+  margin-left: 12.5%;
+  font-size: 125%;
+}
+.infoHome p {
+  text-align: left;
+  font-weight: normal;
+  font-size: 125%;
+  margin-bottom: 20px;
+}
+.infoHome li {
+  font-weight: normal;
+  text-align: left;
+  font-size: 150%;
+}
+.infoHome strong {
+  font-size: 100%;
+}
+.infoHome h1 {
+  font-size: 175%;
+  margin-bottom: 50px;
+}
+
+
+/* ! descriptions.html */
+.describe {
+  position: relative;
+  width: 45%;
+  top: 100px;
+  float: left;
+}
+#left {
+  margin-left: 5%;
+}
+.describe p {
+  margin-left: 50px;
+  margin-right: 50px;
+  font-weight: normal;
+  text-align: center;
+  border-style: solid;
+  border-width: 4px;
+  background-color: #ece7f2;
+}
+.titleBox {
+  float: left;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
+
+
+/* ! visualisations.html (including help-tip)*/
+.infoInfo {
+  position: absolute;
+  text-align: left;
+  margin-top: 120px;
+  margin-left: 5%;
+  width: 50%;
+}
+.selectIntro {
+  position: absolute;
+  text-align: center;
+  margin-top: 120px;
+  right: 5%;
+  width: 20%;
+}
+
 /*
-css for information tooltip
+css for information help-tip
 source: https://tutorialzine.com/2014/07/css-inline-help-tips
 */
-.help-tip{
+.help-tip {
     position: absolute;
     text-align: center;
     background-color: black;
@@ -213,12 +211,12 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
   top: 620px;
   left: 550px;
 }
-.help-tip:before{
+.help-tip:before {
     content:'?';
     font-weight: bold;
     color: #ece7f2;
 }
-.help-tip:hover p{
+.help-tip:hover p {
     display:block;
     top: 150%;
     transform-origin: 100% 0%;
@@ -226,7 +224,7 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
     -webkit-animation: fadeIn 0.3s ease-in-out;
     animation: fadeIn 0.3s ease-in-out;
 }
-.help-tip p{    /* The tooltip */
+.help-tip p {    /* The tooltip */
     display: none;
     text-align: left;
     background-color: #1E2021;
@@ -240,7 +238,7 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
     font-size: 13px;
     line-height: 1.4;
 }
-.help-tip p:before{ /* The pointer of the tooltip */
+.help-tip p:before { /* The pointer of the tooltip */
     position: absolute;
     content: '';
     width:0;
@@ -250,7 +248,7 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
     right:10px;
     top:-12px;
 }
-.help-tip p:after{ /* Prevents the tooltip from being hidden */
+.help-tip p:after { /* Prevents the tooltip from being hidden */
     width:100%;
     height:40px;
     content:'';
@@ -258,7 +256,7 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
     top:-40px;
     left:0;
 }
-#mapInfo:hover p{
+#mapInfo:hover p {
   display:block;
   top: 150%;
   left: -10%;
@@ -267,7 +265,7 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
   -webkit-animation: fadeIn 0.3s ease-in-out;
   animation: fadeIn 0.3s ease-in-out;
 }
-#mapInfo p:before{
+#mapInfo p:before {
   position: absolute;
   content: '';
   width:0;
@@ -279,7 +277,6 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
 }
 
 /* CSS animation */
-
 @-webkit-keyframes fadeIn {
     0% {
         opacity:0;
@@ -291,8 +288,44 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
         transform: scale(1);
     }
 }
-
 @keyframes fadeIn {
     0% { opacity:0; }
     100% { opacity:100%; }
+}
+
+
+/* ! legend boxes */
+#legendBlocks {
+  stroke: black;
+  stroke-width: 2px;
+}
+
+
+/* ! tooltip */
+.toolTip {
+  position: fixed;
+  text-align: center;
+  height: 28px;
+  width: 175px;
+  visibility: hidden;
+  background: black;
+  border-radius: 5px;
+  line-height: 30px;
+  color: white;
+}
+
+
+/*
+! jvectormap Source:
+https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position
+*/
+.jvectormap-legend-cnt-v {
+    bottom: 0;
+    left: 0;
+    right: auto;
+    top: auto;
+}
+.jvectormap-legend-cnt-h {
+   left: 0;
+   right: auto;
 }

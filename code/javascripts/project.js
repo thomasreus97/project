@@ -3,15 +3,23 @@ Name: Thomas Reus
 Student number: 11150041
 Project: dataprocessing
 
-Creates:
+Main javascript
+- Loads and parses the data
+- Defines:
+important variables, the div/svg layout,
+the buttons and their functionalities, a tooltip
+- Creates (the first):
+map, legend, barchart and piechart.
 */
 
 window.onload = function() {
   /*
-  Define variables:
-  - colors, occupations, tooltip
-  load data in from a json file
-  start main function
+  After running all scripts in the html:
+  - Defines variables:
+  margins, main occupancy colors, occupancies,
+  map indentifiers, tooltip and colorscales for map.
+  - loads data in from a json file and
+  starts main function.
   */
 
   // parameters plot
@@ -32,7 +40,7 @@ window.onload = function() {
                      "Water": '#0000FF',
                      "Undefined": "White"};
 
-  // "global" occupancys list
+  // occupancies list
   var globalOccupancies = ["Total", "Traffic", "Built", "Semi-built",
                            "Recreation", "Agricultural", "Forest & Nature",
                            "Water", "Undefined"];
@@ -51,17 +59,10 @@ window.onload = function() {
                  "Water": ['#70a1ef', '#0000FF']};
 
   // tooltip
-  tooltip = d3.select("body")
-              .append("div")
-              .style("position", "fixed")
-              .style("text-align", "center")
-              .style("height", "28px")
-              .style("width", "175px")
-              .style("visibility", "hidden")
-              .style("background", "black")
-              .style("border-radius", "5px")
-              .style("line-height", "30px")
-              .style("color", "white");
+  var toolTip = d3.select("body")
+                  .append("div")
+                  .attr("class", "toolTip");
+
 
   // import the json file then start main function
   d3.json("data/Bodemgebruik_data.json").then(function(response) {
