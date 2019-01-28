@@ -5,7 +5,8 @@ Name: Thomas Reus
 Student number: 11150041
 Project: dataprocessing
 
-HTML file for project
+HTML file for project, imports everything needed and
+defines intro text, navigation bar and information texts.
 -->
 
 <html lang="en">
@@ -50,8 +51,8 @@ HTML file for project
     <div class="topnav">
       <div>
         <span>
-          Name: Thomas Reus<br>
-          Student number: 11150041
+          Thomas Reus 11150041<br>
+          Land occupancy in the Netherlands
         </span>
       </div>
 
@@ -63,18 +64,50 @@ HTML file for project
       </a>
     </div>
 
+    <!-- introduction message -->
+    <div class="introductionVisualisation">
+
+      <div class="help-tip" id="introBubble"></div> &emsp;&emsp; Shows extra information about the visualisations.
+
+    </div>
+
+    <div class="selectIntro">
+      Year, location and occupancy can be manually selected above.
+    </div>
+
     <!-- help-tip texts -->
     <div class="help-tip" id="mapInfo">
-      <p>Map Info</p>
+      <p>
+        Map Info<br>
+        Hover: Shows province name and amount of the current land occupany in km-squared.<br>
+        Click: Updates piechart on the right for the clicked province.<br>
+        Scroll: Zoom in and out.
+      </p>
     </div>
     <div class="help-tip" id="pieInfo">
-      <p>Pie Info</p>
+      <p>
+        Pie Info<br>
+        Light color: Deselected occupancy in legend below and (stacked) barchart on the right.<br>
+        Black border: Current selected occupancy in map on the left.<br>
+        Hover: Shows land occupancy and it's area in km-squared of current province.<br>
+        Click: Updates map on the left for the clicked occupany.<br>
+        Click on light color: 'Click' + selects occupancy in legend and barchart.
+      </p>
     </div>
     <div class="help-tip" id="barInfo">
-      <p>Bar Info</p>
+      <p>
+        Bar Info<br>
+        Black border: Current selected occupancy in map on the left of the page.<br>
+        Hover: Shows land occupancy and it's area in km-squared of the province on the x-axis.<br>
+        Click: Updates map on the left of the page for the clicked occupany.
+      </p>
     </div>
     <div class="help-tip" id="legendInfo">
-      <p>Legend Info</p>
+      <p>
+        Legend Info<br>
+        Light color: Deselected occupancy in (stacked) barchart on the right.<br>
+        Click: (De)select occupancy and update (stacked) barchart.
+      </p>
     </div>
 
   </body>
