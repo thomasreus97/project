@@ -75,3 +75,8 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 
 # day 15
 * finished the description page
+
+# day 16
+* finished home page
+* added information to visualisation page
+* started cleaning up code (style, global variables, css)
