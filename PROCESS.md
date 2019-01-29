@@ -80,3 +80,7 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * finished home page
 * added information to visualisation page
 * started cleaning up code (style, global variables, css)
+
+# day 17
+* made so the tooltip swaps at right boundary of page
+* finished cleaning up code

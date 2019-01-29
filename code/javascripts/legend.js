@@ -9,7 +9,7 @@ the legend and updates pie and barchart accordingly.
 */
 
 
-function makeLegend(data, occupanciesList) {
+function makeLegend(data) {
   /*
   Function that calls the legendpart function
   two times to create the desired legend.
@@ -20,7 +20,7 @@ function makeLegend(data, occupanciesList) {
   */
 
   // make list with occupancies (remove total from list)
-  var occupancies = occupanciesList.slice();
+  var occupancies = globalOccupancies.slice();
   occupancies.shift();
 
   // list with the currently selected occupancies
@@ -29,7 +29,7 @@ function makeLegend(data, occupanciesList) {
   // make the two parts of legend
   legendPart([0, Math.round(occupancies.length / 2)], 1, "legendOrdinal");
   legendPart([Math.round(occupancies.length / 2), occupancies.length], 2,
-              "legendOrdinal2");
+             "legendOrdinal2");
 
   // add id and interactivity to the legend boxes (.swatch)
   d3.select("#legendSvg").selectAll(".swatch")

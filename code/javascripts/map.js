@@ -3,16 +3,32 @@ Name: Thomas Reus
 Student number: 11150041
 Project: dataprocessing
 
-Creates: interactive map of the Netherlands
+Defines functions:
+mapNetherlands: creates a map of the netherlands for an occupancy
+updateMap: delete map and recreate using mapNetherlands
+yearUpdateMap: updates the values of the map for a year
 */
 
 
 function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
   /*
-  Creates map of the Netherlands
+  Input: data, year, currentoccupancy and currentOccupancies
+  data, year and currentOccupancy used to create the map
+  currentOccupancies used for updating piechart onclick
   */
 
-  // all data
+  // define colorscales (constants) for the legend of the map
+  var colorScales = {"Traffic": ["#d8d8d8", "#808080"],
+                     "Built": ["#ffb2b2", "#ff0000"],
+                     "Semi-built": ["#ffe4b2", "#FFA500"],
+                     "Recreation": ["#f3f772", "#a5a90e"],
+                     "Agricultural": ["#DEB887", "#8B4513"],
+                     "Forest & Nature": ["#57ff51", "#12820e"],
+                     "Water": ["#70a1ef", "#0000FF"]};
+
+  // take the data for currentOccupancy
+  // all years to create a "yearly"-global legend because
+  // updating the legend did not work.
   var allData = [];
   for (i in data){
     if (i !== "Nederland") {
@@ -24,7 +40,7 @@ function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
     };
   };
 
-  // parse data into list
+  // make a list of the provinces and data for the current year
   var dataList = [];
   var provinces = [];
   for (i in data) {
@@ -34,7 +50,7 @@ function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
   dataList.shift();
   provinces.shift();
 
-  // add data to indentifier
+  // add data to indentifier (from gobal indentifier list in project.js)
   dataMapFull = {};
   dataMap = {};
   for (i = 0; i < dataList.length; i++) {
@@ -44,56 +60,56 @@ function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
     };
   };
 
-  // provinces where data is NaN
+  // make provinces where data is NaN "invisible"
   var nanProv = $(Object.keys(dataMapFull)).not(Object.keys(dataMap)).get();
   colorNanProv = {};
   for (i in nanProv) {
-    colorNanProv[nanProv[i]] = '#ece7f2';
+    colorNanProv[nanProv[i]] = "#ece7f2";
   };
 
   // print message when no data available
   errorMessage(colorNanProv, dataList);
 
-  // change title
-  d3.select("#mapTitle").text("Km\xB2 " + currentOccupancy + " per province" +
+  // change title of map
+  d3.select("#mapTitle").text(currentOccupancy + " area per province" +
                               " in " + year);
 
   // place map nl, adapted from: http://jvectormap.com/
-  $(function(){
-    $('#mapDiv').vectorMap({
-      map: 'nl_merc',
-      backgroundColor: '#ece7f2',
+  $(function() {
+    $("#mapDiv").vectorMap({
+      map: "nl_merc",
+      backgroundColor: "#ece7f2",
       regionStyle: {
-        hover: { 'fill-opacity': 0.5 }
+        hover: { "fill-opacity": 0.5 }
       },
       series: {
         regions: [{
 
           // add color scale with legend
-          attribute: 'fill',
+          attribute: "fill",
           values: dataMap,
           min: jvm.min(allData),
           max: jvm.max(allData),
           scale: colorScales[currentOccupancy],
-          normalizeFunction: 'lineal',
+          normalizeFunction: "lineal",
           legend: {
             horizontal: true,
             title: currentOccupancy + " (km\xB2)" ,
           }
         },
 
-        // fill provinces with NaN values
+          // fill provinces with NaN values
           {
           values: colorNanProv,
-          attribute: 'fill',
+          attribute: "fill",
         }]
       },
 
       // show text with name and occupancy on hover
-      onRegionTipShow: function(event, label, code){
+      onRegionTipShow: function(event, label, code) {
         label.html(
-          '<b>'+label.html()+'</b></br>'+
-          '<b>'+currentOccupancy+': </b>'+dataMapFull[code]+' km\xB2'
+          "<b>"+label.html()+"</b></br>"+
+          "<b>"+currentOccupancy+": </b>"+dataMapFull[code]+" km\xB2"
         );
       },
 
@@ -102,7 +118,7 @@ function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
         var province = provinces[Object.keys(dataMapFull).indexOf(regio)];
         var chosenYear = d3.select("#sliderYear").property("value");
         d3.select("#provinceDropdown").property("value", province);
-        var chosenProvince = d3.select("#provinceDropdown").property("value")
+        var chosenProvince = d3.select("#provinceDropdown").property("value");
         pieUpdate(data, chosenProvince, chosenYear, currentOccupancies, true);
       }
     })
@@ -112,21 +128,25 @@ function mapNetherlands(data, year, currentOccupancy, currentOccupancies) {
 
 function updateMap(data, year, currentOccupancy, currentOccupancies) {
   /*
-  reset map and legend
+  resets map and legend
   */
-  var mapObject = $('#mapDiv').vectorMap('get', 'mapObject').remove();
+
+  var mapObject = $("#mapDiv").vectorMap("get", "mapObject").remove();
   mapNetherlands(data, year, currentOccupancy, currentOccupancies);
 };
 
 
 function yearUpdateMap(data, year, currentOccupancy, currentOccupancies) {
+  /*
+  Updates a current map for a different dataset (chosen on year)
+  */
 
   // update title
   d3.select("#mapTitle").transition()
-                        .text("Km\xB2 " + currentOccupancy + " per province" +
+                        .text(currentOccupancy + " area per province" +
                               " in " + year);
 
-  // get data
+  // get data for current occupancy and year
   var dataList = [];
   var provinces = [];
   for (i in data) {
@@ -136,7 +156,7 @@ function yearUpdateMap(data, year, currentOccupancy, currentOccupancies) {
   dataList.shift();
   provinces.shift();
 
-  // add data to indentifier
+  // add data to indentifier (global constant project.js)
   dataMapFull = {};
   dataMap = {};
   for (i = 0; i < dataList.length; i++) {
@@ -146,18 +166,18 @@ function yearUpdateMap(data, year, currentOccupancy, currentOccupancies) {
     };
   };
 
-  // provinces where data is NaN
+  // make provinces where data is NaN "invisible"
   var nanProv = $(Object.keys(dataMapFull)).not(Object.keys(dataMap)).get();
   colorNanProv = {};
   for (i in nanProv) {
-    colorNanProv[nanProv[i]] = '#ece7f2';
+    colorNanProv[nanProv[i]] = "#ece7f2";
   };
 
   // print message when no data available
   errorMessage(colorNanProv, dataList);
 
   // select map object
-  var mapObject = $('#mapDiv').vectorMap('get', 'mapObject');
+  var mapObject = $("#mapDiv").vectorMap("get", "mapObject");
 
   // update graph variables
   mapObject.series.regions[0].clear();

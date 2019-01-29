@@ -4,8 +4,9 @@ Student number: 11150041
 Assignment: linked views D3
 
 All style for everything in the project
-! indicates a new "chapter": like body, navbar,
-every html page etc.
+! indicates a new "chapter"
+order: body, html-styles, legend-style,
+project.js styles, map-styles.
 */
 
 
@@ -306,12 +307,57 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
   position: fixed;
   text-align: center;
   height: 28px;
-  width: 175px;
+  width: 225px;
   visibility: hidden;
   background: black;
   border-radius: 5px;
   line-height: 30px;
   color: white;
+}
+
+
+/* ! div layout project.js */
+#mainDiv {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  top: 200px;
+  width: 100%;
+}
+#mapDiv {
+  position: absolute;
+  left: 3%;
+  top: 10%;
+  width: 30%;
+  height: 85%;
+}
+#mapTitle {
+  position: absolute;
+  width: 30%;
+  text-align: left;
+}
+#pieSvg {
+  position: absolute;
+  left: 34.5%;
+  width: 30%;
+  height: 60%;
+}
+#legendSvg {
+  position: absolute;
+  left: 34.5%;
+  width: 30%;
+  height: 40%;
+  bottom: 0px;
+}
+#barSvg {
+  position: absolute;
+  left: 64.5%;
+  width: 34%;
+  height: 95%;
+}
+#errorDiv {
+  position: absolute;
+  left: 14%;
 }
 
 
