@@ -186,6 +186,9 @@ function pieUpdate(data, name, year, currentOccupancies, updateQuestion) {
       });
     };
 
+  // inspiration from website
+  // source: https://bl.ocks.org/rshaker/225c6df494811f46f6ea53eba63da817
+  
   // duration of transition
   var duration = 500;
 

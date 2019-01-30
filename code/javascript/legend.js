@@ -37,28 +37,28 @@ function makeLegend(data) {
 
     // on click ask year and location and update bar and piechart accordingly
     .on("click", function(i) {
-     var chosenYear = d3.select("#sliderYear").property("value");
-     var chosenName = d3.select("#provinceDropdown")
-                        .property("value");
+      var chosenYear = d3.select("#sliderYear").property("value");
+      var chosenName = d3.select("#provinceDropdown")
+                         .property("value");
 
-     // check if clicked uccupancy was selected or not and (de)select
-     // selection is indicated by occupancy
-     var index = currentOccupancies.indexOf(i);
-     if (index > -1) {
-       currentOccupancies.splice(index, 1);
-       d3.select(this)
-         .attr("opacity", 0.3);
-     }
-     else {
-       currentOccupancies.push(i);
-       d3.select(this)
-         .attr("opacity", 1);
-     };
+      // check if clicked uccupancy was selected or not and (de)select
+      // selection is indicated by occupancy
+      var index = currentOccupancies.indexOf(i);
+      if (index > -1) {
+        currentOccupancies.splice(index, 1);
+        d3.select(this)
+          .attr("opacity", 0.3);
+      }
+      else {
+        currentOccupancies.push(i);
+        d3.select(this)
+          .attr("opacity", 1);
+      };
 
-     // update map and barchart
-     updateBar(data, chosenYear, currentOccupancies, true);
-     pieUpdate(data, chosenName, chosenYear, currentOccupancies,
-               true);
+      // update map and barchart
+      updateBar(data, chosenYear, currentOccupancies, true);
+      pieUpdate(data, chosenName, chosenYear, currentOccupancies,
+                true);
     })
 
     // adds a fancy pointer on mouseover (to indicate you can click)

@@ -1,50 +1,65 @@
-# Proposal: Land occupancy in the Netherlands
-Name: Thomas Reus
-Student Number: 11150041
+# [Land occupancy in the Netherlands](https://thomasreus97.github.io/project/code)
 
-## Problem statement
-Show the land occupancy of the Netherlands and provide the user to filter the information they are interested in.
+A visualisation of the land occupancy distribution in the Netherlands.
 
-Target audience: people interested in the land occupancy of the netherlands (probably ducth people themselves)
+By: Thomas Reus (student number 11150041)
 
-## Solution
-Single line: Give the land occupancy for the Netherlands per province with clearly visualized and filterable information.
+[License](../master/LICENSE)
 
-![Visual sketch:](https://github.com/thomasreus97/project/blob/master/doc/layout_proposal_2.png)
+## Overview visualisation page
 
-### Main features
-1. Interactive map of the netherlands, shows data when hovering over for one occupancy (choose with **5**). Clicking on one province updates info in **3**, choose year in **7**..
-2. (stacked) Bar chart for all provinces (shows data for multiple occupancy **8**, or clicking in **3**) (maybe sortable, function not added in figure).
-3. Pie chart for Netherlands/one province (sort clicking in **1** or choosing in **6**).
-4. Line graph to compare an occupancy selected in **11** for several provinces selected in **9** over a time period chosen in **10**.
+The main purpose of this page is to give an insight into the land occupancy distribution in the Netherlands.
 
-MVP: **1**, **2** and **3** for visual. **5**, **6**, **7** and **8** for selecting. **4** (with **11**, **9** and **10**) is nice to have.
+![everything](https://github.com/thomasreus97/project/blob/master/doc/everything.jpg)
 
-## Prerequisites
-### Data sources 
-[Bodemgebruik CBS per provincie](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37105/table?ts=1543167766064)
-### External components 
-Some of these (?):
-- D3
-- D3 Tip Library
-- jQuery
-- Bootstrap
-- TopoJSON
-- DataMaps
+This overview consist of the three main visualisation parts:
 
-### Review of related visualizations
-Three examples:
-[1: map, year slider, area graph](https://fietsboekstoel.github.io/Project/)
-[2: map, bar, pie](https://dboekhout.github.io/CSRIB/)
-[3: map, bar](https://jaspernaberman.github.io/Programming-Project/Scripts/HTML/index.html)
+## Map
+This visualisation shows the area of one type of occupancy for all provinces in the Netherlands. This data is changable of year and can be chosen for every occupancy seperately.
 
-All use maps of europe or the world. Hovering over the different parts shows some data and highlights the related parts in all the data representations (in example **3**).
+The purpose of this visualisation is to give an overview for one occupancy.
 
-Bar: **3** horizontal and sorting, **2** vertical.
+![map](https://github.com/thomasreus97/project/blob/master/doc/map.jpg)
 
-**1** does have a year slider, i would like to do that about the same.
+## Pie
+When starting the page the user will be shown a piechart of the distribution of the occupancies in the Netherlands. This can be updated for every province and year.
 
-### hardest part
-Never made a map visualisation (**1** in Main features), solution: Internet.
+The purpose of this visualisation is to show how the occupancies are distributed in seperate locations.
 
+![pie](https://github.com/thomasreus97/project/blob/master/doc/pie.jpg)
 
+## (Stacked)bar
+This visualisation shows a stacked barchart of all provinces available. These stacks consist of all (in the legend shown in the Pie chapter above) selected occupancies. This is updatable by year.
+
+The purpose of this visualisation is to combine the purposes of the map and the piechart, with a personalisation twist by being able to select the occupancies you want.
+
+![bar](https://github.com/thomasreus97/project/blob/master/doc/bar.jpg)
+
+## Extensions
+- [D3](https://github.com/d3/d3)
+- [JQuery](https://jquery.com/)
+- [JVectormap](http://jvectormap.com/tutorials/getting-started/)
+- [Legend](https://cdnjs.com/libraries/d3-legend)
+- [Bootstrap](https://getbootstrap.com/docs/3.3/getting-started/)
+
+Note: these materials have their own respective licenses.
+
+## Image source
+- [Favicon](https://cdn4.iconfinder.com/data/icons/countries-map-1/30/Netherlands-128.png)
+
+Note: these materials have their own respective licenses.
+
+## Code parts sources
+- [Navbar](https://www.w3schools.com/howto/howto_js_topnav.asp)
+- [JVectormap](http://jvectormap.com/)
+- [Rotating labels](http://bl.ocks.org/d3noob/ccdcb7673cdb3a796e13)
+- [Update piechart](https://bl.ocks.org/rshaker/225c6df494811f46f6ea53eba63da817)
+
+Note: these materials have their own respective licenses.
+
+## CSS sources
+- [Navbar](https://www.w3schools.com/howto/howto_js_topnav.asp)
+- [Help-tip](https://tutorialzine.com/2014/07/css-inline-help-tips)
+- [Jvectormap Legend](https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position)
+
+Note: these materials have their own respective licenses.

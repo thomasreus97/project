@@ -154,7 +154,7 @@ source: https://www.w3schools.com/howto/howto_js_topnav.asp
 }
 
 
-/* ! visualisations.html (including help-tip)*/
+/* ! visualisations.html (including help-tip) */
 .infoInfo {
   position: absolute;
   text-align: left;
@@ -197,23 +197,23 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
   margin-right: auto;
 }
 #mapInfo {
-  left: 20px;
+  left: 2%;
   top: 230px;
 }
 #pieInfo {
   top: 230px;
-  left: 530px;
+  left: 35%;
 }
 #barInfo {
   top: 230px;
-  right: 500px;
+  right: 33%;
 }
 #legendInfo {
   top: 620px;
-  left: 550px;
+  left: 36%;
 }
 .help-tip:before {
-    content:'?';
+    content:"?";
     font-weight: bold;
     color: #ece7f2;
 }
@@ -362,6 +362,7 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
 
 
 /*
+Jvectormap legend
 ! jvectormap Source:
 https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-position
 */

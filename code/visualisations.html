@@ -13,21 +13,25 @@ Runs 5 javascripts for the visualisation:
 Map, Pie, Bar, Legend and Main.
 
 Creates:
-Navigationbar, two information texts
-and 4 helptips.
+Navigationbar, two information texts, 4 helptips
+and a reset button for the legend.
 -->
 
 <html lang="en">
   <head>
-    <title>Project Thomas Reus</title>
+    <title>Visualisations</title>
     <meta charset=utf-8 />
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png"
+          href="https://cdn4.iconfinder.com/data/icons/countries-map-1/30/Netherlands-128.png">
 
     <!-- Everything needed for the map
      source: http://jvectormap.com/tutorials/getting-started/ -->
-    <script src="javascripts/jquery.js"></script>
-    <script src="javascripts/jquery-jvectormap-2.0.3.min.js"></script>
-    <script src="javascripts/map_nl.js"></script>
-    <link rel="stylesheet" href="javascripts/jquery-jvectormap-2.0.3.css"
+    <script src="external/jquery.js"></script>
+    <script src="external/jquery-jvectormap-2.0.3.min.js"></script>
+    <script src="external/map_nl.js"></script>
+    <link rel="stylesheet" href="external/jquery-jvectormap-2.0.3.css"
           type="text/css" media="screen"/>
 
     <!-- D3 script for making the graph etc. -->
@@ -40,16 +44,16 @@ and 4 helptips.
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- style -->
-    <link rel="stylesheet" href="javascripts/project.css">
+    <link rel="stylesheet" href="css/project.css">
 
     <!-- javascripts for making the visualisations -->
-    <script src="javascripts/map.js" type="text/javascript"></script>
-    <script src="javascripts/stackedbar.js" type="text/javascript"></script>
-    <script src="javascripts/piechart.js" type="text/javascript"></script>
-    <script src="javascripts/legend.js" type="text/javascript"></script>
+    <script src="javascript/map.js" type="text/javascript"></script>
+    <script src="javascript/stackedbar.js" type="text/javascript"></script>
+    <script src="javascript/piechart.js" type="text/javascript"></script>
+    <script src="javascript/legend.js" type="text/javascript"></script>
 
     <!-- main javascript -->
-    <script src="javascripts/project.js" type="text/javascript"></script>
+    <script src="javascript/project.js" type="text/javascript"></script>
   </head>
   <body>
 

@@ -79,13 +79,15 @@ function main(data) {
 
   // parse the data into another format
   // subdivisions into the "main" divisions
-  var newData = dataParser(data);
+  var output = dataParser(data);
+  var newData = output[0];
+  var yearsList = output[1];
 
   // make legend and define currentoccupancies list
   var currentOccupancies = makeLegend(newData);
 
   // assign data ranges to buttons
-  buttonFixer(newData, currentOccupancies);
+  buttonFixer(newData, currentOccupancies, yearsList);
   sliderText(year);
 
   // create initial visualisations
@@ -185,6 +187,9 @@ function dataParser(data) {
   /*
   Put all sub-occupations into the corresponding main occupancy
   main occupancies are: globalOccupancies
+  Don't count years where no data is available at all (this is done in
+  a different loop (could've been done in the same) to make it easier to
+  follow what is going on).
   */
 
   // iterate through the data and add them into the correct global occupancy
@@ -254,21 +259,73 @@ function dataParser(data) {
     };
   };
 
-  // return formatted data
-  return (newData);
+  // year selecttion
+  // create years list
+  var years = [];
+  for (var province in data) {
+    for (var year in data[province]) {
+      years.push(year);
+    };
+    break;
+  };
+
+  // check for every year if there is data
+  var emptyYears = [];
+  var goodYears = [];
+  for (var i in years) {
+    var year = years[i];
+    var dataYears = [];
+    for (var province in data) {
+      var dataProvince = [];
+
+      // fill data from province+year into data province if available
+      for (var occupancy in data[province][year]) {
+        var value = data[province][year][occupancy];
+        if (!isNaN(parseFloat(value))) {
+          dataProvince.push(value);
+        };
+      };
+
+      // if there is no data (next to undefined), push 1 to dataYears and break
+      if (dataProvince.length <= 1) {
+        continue;
+      }
+      else {
+        dataYears.push(1);
+        break;
+      };
+    };
+
+    // if datayears length === 0, empty year is found
+    if (dataYears.length === 0) {
+      emptyYears.push(year);
+    }
+    else {
+      goodYears.push(year);
+    };
+  };
+
+  // delete empty years from newdata
+  for (var province in newData) {
+    for (var i in emptyYears) {
+      delete newData[province][emptyYears[i]];
+    };
+  };
+  
+  // return formatted data and years
+  return [newData, goodYears];
 };
 
 
-function buttonFixer(data, currentOccupancies) {
+function buttonFixer(data, currentOccupancies, years) {
   /*
   Add all data and functionality to:
   Both dropdown buttons, yearslider
-  Functionality = update map, pie, bar and titles accordingly
+  Functionality = update map, pie, bar and titles accordingly.
   */
 
   // get all years, occupancies and provinces
   var provinces = Object.keys(data);
-  var years = Object.keys(data[provinces[0]]);
   var occupancies = globalOccupancies.slice();
   occupancies.pop();
   occupancies.shift();
@@ -310,13 +367,20 @@ function buttonFixer(data, currentOccupancies) {
           var chosenProvince = provinceDrop.property("value");
           var currentOccupancy = occupancyDrop.property("value");
 
-          // update visualisations and texts of slider and barchart
-          sliderText(this.value);
-          pieUpdate(data, chosenProvince, this.value, currentOccupancies, true);
-          yearUpdateMap(data, this.value, currentOccupancy, currentOccupancies);
-          updateBar(data, this.value, currentOccupancies);
-          d3.select("#barchartTitle")
-            .text("Distribution of occupancies per province in " + this.value);
+          // check if available year, then change
+          if (years.indexOf(this.value) > -1) {
+
+            // update visualisations and texts of slider and barchart
+            sliderText(this.value);
+            pieUpdate(data, chosenProvince, this.value, currentOccupancies,
+                      true);
+            yearUpdateMap(data, this.value, currentOccupancy,
+                          currentOccupancies);
+            updateBar(data, this.value, currentOccupancies);
+            d3.select("#barchartTitle")
+              .text("Distribution of occupancies per province in " +
+                    this.value);
+          };
         });
 
   // add interactivity to the select
