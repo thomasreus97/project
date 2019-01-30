@@ -19,21 +19,21 @@ This visualisation shows the area of one type of occupancy for all provinces in 
 
 The purpose of this visualisation is to give an overview for one occupancy.
 
-![map](https://github.com/thomasreus97/project/blob/master/doc/map.jpg)
+<img src="https://github.com/thomasreus97/project/blob/master/doc/map.jpg" width="400"/>
 
 ## Pie
 When starting the page the user will be shown a piechart of the distribution of the occupancies in the Netherlands. This can be updated for every province and year.
 
 The purpose of this visualisation is to show how the occupancies are distributed in seperate locations.
 
-![pie](https://github.com/thomasreus97/project/blob/master/doc/pie.jpg)
+<img src="https://github.com/thomasreus97/project/blob/master/doc/pie.jpg" width="400"/>
 
 ## (Stacked)bar
 This visualisation shows a stacked barchart of all provinces available. These stacks consist of all (in the legend shown in the Pie chapter above) selected occupancies. This is updatable by year.
 
 The purpose of this visualisation is to combine the purposes of the map and the piechart, with a personalisation twist by being able to select the occupancies you want.
 
-![bar](https://github.com/thomasreus97/project/blob/master/doc/bar.jpg)
+<img src="https://github.com/thomasreus97/project/blob/master/doc/bar.jpg" width="400"/>
 
 ## Extensions
 - [D3](https://github.com/d3/d3)
