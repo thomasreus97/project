@@ -314,6 +314,9 @@ source: https://tutorialzine.com/2014/07/css-inline-help-tips
   line-height: 30px;
   color: white;
 }
+#lineToolTip {
+  width: 125px;
+}
 
 
 /* ! div layout project.js */
@@ -375,4 +378,17 @@ https://stackoverflow.com/questions/39983909/change-the-jvectormap-legend-positi
 .jvectormap-legend-cnt-h {
    left: 0;
    right: auto;
+}
+
+
+/* ! linechart */
+#lineSvg {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 80%;
+}
+#lineTitle {
+  font-size: 150%;
 }

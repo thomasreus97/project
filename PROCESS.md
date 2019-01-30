@@ -89,3 +89,4 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 * removed years without data
 * added favicon
 * made README, LICENSE and REPORT folder
+* Added an extra html with a linechart

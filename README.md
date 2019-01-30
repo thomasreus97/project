@@ -35,6 +35,13 @@ The purpose of this visualisation is to combine the purposes of the map and the 
 
 <img src="https://github.com/thomasreus97/project/blob/master/doc/bar.jpg" width="400"/>
 
+## Time page Linechart
+This visualisation shows an occupancy over time for a province. Both can be selected.
+
+The purpose of this visualisation is to be able to view the change of an occupancy over time.
+
+<img src="https://github.com/thomasreus97/project/blob/master/doc/line.jpg">
+
 ## Extensions
 - [D3](https://github.com/d3/d3)
 - [JQuery](https://jquery.com/)

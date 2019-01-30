@@ -174,7 +174,7 @@ function layoutMaker() {
     .attr("type", "range")
     .attr("class", "custom-range");
 
-  // div for error message map (might parse the data, then this isnt needed)
+  // div for error message map 
   d3.select("#mainDiv")
     .append("div")
     .attr("id", "errorDiv")
@@ -311,7 +311,7 @@ function dataParser(data) {
       delete newData[province][emptyYears[i]];
     };
   };
-  
+
   // return formatted data and years
   return [newData, goodYears];
 };
