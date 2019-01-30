@@ -87,6 +87,5 @@ Updated proposal in [README.md](https://github.com/thomasreus97/project/blob/mas
 
 # day 18
 * removed years without data
-* added info of the missing years
 * added favicon
 * made README, LICENSE and REPORT folder
