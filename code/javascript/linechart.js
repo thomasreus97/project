@@ -165,7 +165,7 @@ function linechartMaker(data, first) {
       .attr("stroke", "black")
       .attr("opacity", "0.75")
       .attr("stroke-width", "2px")
-      .attr("r", 5)
+      .attr("r", 8)
       .attr("cy", function(d) {
         return scales[1](d);
       })
@@ -261,7 +261,7 @@ function dotConnector() {
 
   // remove line, had no time to do the transition
   svg.select("#lineId").remove().exit();
-   
+
   // add line
   svg.append("path")
      .transition()
