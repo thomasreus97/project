@@ -4,7 +4,7 @@ Thomas Reus (student number 11150041)
 
 Data source: [Bodemgebruik CBS per provincie](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37105/table?ts=1543167766064).
 
-link: ![Land occupancy in the Netherlands](https://thomasreus97.github.io/project/code/)
+link: [Land occupancy in the Netherlands](https://thomasreus97.github.io/project/code/)
 
 
 ## Overview product
